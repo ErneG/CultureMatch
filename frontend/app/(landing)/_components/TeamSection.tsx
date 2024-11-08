@@ -66,7 +66,7 @@ const TeamSection = () => {
   };
 
   return (
-    <section id="team-section" className="px-5 pt-40">
+    <section id="team-section" className="px-5 pt-20">
       <div className="flex flex-col items-center">
         <h2 className="text-4xl font-bold text-center lg:text-7xl pb-20">Team</h2>
       </div>
