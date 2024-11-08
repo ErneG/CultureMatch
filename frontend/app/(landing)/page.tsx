@@ -7,7 +7,10 @@ const LandingPage = () => {
     <>
       <HeroSection />
       <AboutSection />
+      <section className="h-10" />
+
       <TeamSection />
+      <section className="h-20" />
     </>
   );
 };
