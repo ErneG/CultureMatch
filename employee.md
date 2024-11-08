@@ -1,6 +1,6 @@
 # Company Culture and Satisfaction Survey
 
-### All responses are rated 1-6 from least applicable to most
+### All responses are rated 1-6 from least applicable to most, comments available for each answer
  - Do you approve of the CEO of the company? **Y/N**
  - Overall, I am completely satisfied with my job.
  - My work has a clear sense of purpose.
