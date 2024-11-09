@@ -1,8 +1,10 @@
 transformers
 torch
-numpy
+numpy==1.21.6
 pandas
 scikit-learn
 textstat
 python-dotenv
 sagemaker>=2.48.0
+nltk
+spacy==3.5.0

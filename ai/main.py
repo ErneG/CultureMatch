@@ -1,9 +1,14 @@
 from dotenv import load_dotenv
 
+from ai.scorers.complexity import ComplexityScorer
 from ai.scorers.conductivity import ConductivityScorer
 from ai.scorers.sentiment import SentimentScorer
+from ai.setup import run_setup
 
 load_dotenv()
+
+# Set up general AI module
+run_setup()
 
 # Set up test feedbacks
 input_texts = [
@@ -24,11 +29,18 @@ print("SENTIMENT SCORES")
 print(sentiment_scores)
 print()
 
-# Testing conductivity score
+# Conductivity score tests
 conductivity_scorer = ConductivityScorer()
 conductivity_scores = conductivity_scorer.calculate_conductivity_scores_batch(
     input_texts
 )
 print("MEANINGFULNESS SCORES")
 print(conductivity_scores)
+print()
+
+# Complexity score tests
+complexity_scorer = ComplexityScorer()
+complexity_scores = complexity_scorer.complexity_score_batch(input_texts)
+print("COMPLEXITY SCORES")
+print(complexity_scores)
 print()
