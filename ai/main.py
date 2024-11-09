@@ -54,6 +54,46 @@ candidate_labels = [
 
 
 class WeightedScorer:
+    """
+    A class that provides methods to calculate weighted scores for text inputs.
+
+    Methods
+    -------
+    calculate_weighted_single_text(input_text: str, alpha=0.05, beta=0.35, gamma=0.3, delta=0.3) -> float:
+        Computes the weighted score for a single text input using the specified weight parameters.
+
+    calculate_weighted_batch(input_texts: List[str], alpha=0.05, beta=0.35, gamma=0.3, delta=0.3) -> List[float]:
+        Computes weighted scores for a batch of text inputs using the specified weight parameters.
+
+    Parameters
+    ----------
+    input_text : str
+        The text input for which the weighted score is to be calculated.
+
+    input_texts : List[str]
+        A list of text inputs for which the weighted scores are to be calculated.
+
+    alpha : float, optional
+        Weight parameter for the first scoring component (default is 0.05).
+
+    beta : float, optional
+        Weight parameter for the second scoring component (default is 0.35).
+
+    gamma : float, optional
+        Weight parameter for the third scoring component (default is 0.3).
+
+    delta : float, optional
+        Weight parameter for the fourth scoring component (default is 0.3).
+
+    Returns
+    -------
+    float
+        The weighted score for a single text input.
+
+    List[float]
+        A list of weighted scores for the batch of text inputs.
+    """
+
     def __init__(self):
         self.sentiment_scorer = SentimentScorer()
         self.conductivity_scorer = ConductivityScorer()
@@ -172,14 +212,14 @@ class WeightedScorer:
 
 # ! TEST ONLY
 
-weighted = WeightedScorer()
-scores = weighted.calculate_weighted_batch(
-    input_texts,
-    alpha=0.05,
-    beta=0.45,
-    gamma=0.3,
-    delta=0.2,
-)
-print("WEIGHTED SCORES")
-print(scores)
-print()
+# weighted = WeightedScorer()
+# scores = weighted.calculate_weighted_batch(
+#     input_texts,
+#     alpha=0.05,
+#     beta=0.45,
+#     gamma=0.3,
+#     delta=0.2,
+# )
+# print("WEIGHTED SCORES")
+# print(scores)
+# print()
