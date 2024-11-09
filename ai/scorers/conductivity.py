@@ -1,3 +1,4 @@
+import os
 import json
 from typing import List
 import numpy as np
@@ -6,14 +7,10 @@ from ai.connectors.sagemaker_embedding import SageMakerEmbeddings
 
 
 class ConductivityScorer:
-    def __init__(
-        self,
-        template_embeddings_filename: str = "ai/sample_data/template_feedbacks_embed.json",
-        template_feedbacks_filename: str = "ai/sample_data/template_feedbacks.json",
-    ):
+    def __init__(self):
         self.sgm_embedding_instance = SageMakerEmbeddings()
-        self.template_embeddings_filename = template_embeddings_filename
-        self.template_feedbacks_filename = template_feedbacks_filename
+        self.template_embeddings_filename = os.environ["TEMPLATE_EMBED_FILE"]
+        self.template_feedbacks_filename = os.environ["TEMPLATE_FEEDBACK_FILE"]
 
         template_embeddings_stored = self.retrieve_template_embeddings()
         if template_embeddings_stored != None:
@@ -145,7 +142,9 @@ class ConductivityScorer:
             # Length scaling: higher length means better score adjustment
             adjusted_meaningfulness = meaningfulness * length_factor
 
-            print(f"MEAN: Processing comment: {feedback} - value: {adjusted_meaningfulness}")
+            print(
+                f"MEAN: Processing comment: {feedback} - value: {adjusted_meaningfulness}"
+            )
             scores.append(adjusted_meaningfulness)
 
         # Apply final normalization to range [0, 1]
