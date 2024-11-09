@@ -1,0 +1,76 @@
+{
+    "employee_questionnaire": [
+      {
+        "question": "My current workspace setup (collaborative or private) supports my productivity and comfort.",
+        "description": "How does your current work environment affect your productivity? Do you find the workspace arrangement beneficial to your work style?"
+      },
+      {
+        "question": "I feel a strong sense of connection with my team.",
+        "description": "Describe the culture within your team. What aspects of team dynamics or culture contribute to the environment?"
+      },
+      {
+        "question": "My company is genuinely committed to sustainability and social responsibility initiatives.",
+        "description": "What sustainability or social responsibility efforts has the company made? How important are these initiatives to you?"
+      },
+      {
+        "question": "There are opportunities in the company for community involvement and volunteering.",
+        "description": "Are there company-led initiatives for community engagement? Describe any involvement opportunities and whether they align with your interests."
+      },
+      {
+        "question": "The company has clear policies supporting diversity, equity, and inclusion.",
+        "description": "How do diversity, equity, and inclusion efforts manifest in your workplace? Why are these initiatives important to you as an employee?"
+      },
+      {
+        "question": "There are regular opportunities for learning and development within the company.",
+        "description": "How accessible are learning and development resources? What programs have you found particularly helpful in your role?"
+      },
+      {
+        "question": "I receive mentorship and guidance from managers that support my growth.",
+        "description": "Describe your experience with mentorship at the company. How does the guidance from managers contribute to your professional success?"
+      },
+      {
+        "question": "My role includes regular opportunities for skills development and training.",
+        "description": "Describe the type of training and skills development available to you. How relevant are these opportunities to your role and growth?"
+      },
+      {
+        "question": "I have flexibility in my work hours and/or remote work options.",
+        "description": "How flexible is the company regarding work hours or remote options? How does this flexibility impact your work-life balance?"
+      },
+      {
+        "question": "I am able to maintain a healthy work-life balance at my current job.",
+        "description": "How do you balance your work and personal life? Does the company culture or policies help you maintain this balance?"
+      },
+      {
+        "question": "My work aligns with a sense of personal passion or purpose.",
+        "description": "How does your current role connect with your personal values or passions? Describe how this impacts your overall job satisfaction."
+      },
+      {
+        "question": "I am encouraged to take on new challenges and experience a variety of tasks.",
+        "description": "How often are you given new challenges or opportunities? How does the variety in tasks affect your motivation and engagement?"
+      },
+      {
+        "question": "I receive frequent feedback and recognition for my work.",
+        "description": "How often do you receive feedback or recognition from managers and peers? How does this impact your motivation?"
+      },
+      {
+        "question": "I feel valued and acknowledged for my individual contributions.",
+        "description": "Describe how the company recognizes your work and contributions. How does this make you feel valued as an employee?"
+      },
+      {
+        "question": "There are clear communication channels and regular check-ins with my team and manager.",
+        "description": "How would you describe communication within your team? Are check-ins structured and regular, and do they improve team dynamics?"
+      },
+      {
+        "question": "There is open and transparent communication from both team members and leadership.",
+        "description": "How transparent is communication within your team and from leadership? How does this impact your experience at work?"
+      },
+      {
+        "question": "The work environment encourages creativity and innovation through brainstorming sessions and collaborative spaces.",
+        "description": "How does the company foster creativity and innovation? Are there spaces or practices that encourage brainstorming and new ideas?"
+      },
+      {
+        "question": "The dress code at my workplace allows me to feel comfortable and productive.",
+        "description": "Describe the dress code at work. Does it contribute to your comfort and productivity, or would you prefer a different approach?"
+      }
+    ]
+  }
