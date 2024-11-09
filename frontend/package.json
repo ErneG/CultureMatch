@@ -41,6 +41,7 @@
     "react-hook-form": "^7.53.2",
     "react-toastify": "^10.0.6",
     "react-use": "^17.5.1",
+    "recharts": "^2.13.3",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"
