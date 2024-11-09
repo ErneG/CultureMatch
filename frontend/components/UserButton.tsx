@@ -13,7 +13,6 @@ import { MenuIcon } from 'lucide-react';
 
 const links = [
   { href: '/enterprise/summary', label: 'Summary' },
-  { href: '/enterprise/applicants', label: 'Applicants' },
   { href: '/enterprise/positions', label: 'Positions' },
   { href: '/enterprise/profile', label: 'Profile' },
 ];
