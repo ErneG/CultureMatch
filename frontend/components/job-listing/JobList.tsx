@@ -7,15 +7,15 @@ interface JobListProps {
 }
 
 export const JobList: React.FC<JobListProps> = ({ jobs, onSelectJob, activeJobId }) => (
-  <div className="h-full overflow-y-auto bg-gray-100 p-4">
+  <div className="h-full overflow-y-auto bg-gray-100">
     {jobs.map((job) => (
       <div
         key={job.id}
         onClick={() => onSelectJob(job)}
-        className={`p-4 mb-2 rounded-md cursor-pointer bg-white ${
+        className={`p-4 mb-2 rounded-md cursor-pointer bg-white mx-2 ${
           job.id === activeJobId ? 'bg-blue-100 border border-blue-500' : ''
         }`}>
-        <h3 className="font-bold">{job.title}</h3>
+        <h3 className="font-bold text-lg">{job.title}</h3>
         {job.location && <p className="text-sm">Location: {job.location}</p>}
         {job.salaryMin && job.salaryMax && (
           <p className="text-sm">

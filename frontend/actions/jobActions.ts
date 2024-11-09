@@ -1,12 +1,13 @@
 'use server';
 
+import { ENTERPRISE_COMPANY_ID } from '@/config/constants';
 import prisma from '@/lib/db';
 import { JobListing } from '@/types/entities';
 import { Prisma } from '@prisma/client';
 
-export async function fetchJobListings(companyId: number): Promise<JobListing[]> {
+export async function fetchJobListings(): Promise<JobListing[]> {
   const jobs = await prisma.jobListing.findMany({
-    where: { entityId: companyId },
+    where: { entityId: ENTERPRISE_COMPANY_ID },
   });
 
   return jobs.map((job) => ({

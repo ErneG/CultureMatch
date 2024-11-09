@@ -1,13 +1,14 @@
 'use server';
 
+import { ENTERPRISE_COMPANY_ID } from '@/config/constants';
 import prisma from '@/lib/db';
 import { Entity } from '@/types/entities';
 
-export async function fetchCompanies(): Promise<Entity[]> {
-  const companies = await prisma.entity.findMany({
-    select: { id: true, name: true, type: true },
+export async function fetchCompany(): Promise<Entity | null> {
+  const company = await prisma.entity.findUnique({
+    where: { id: ENTERPRISE_COMPANY_ID }, // Assuming the company has an ID of 1
   });
-  return companies;
+  return company;
 }
 
 export async function createCompany(data: Omit<Entity, 'id' | 'type'>): Promise<Entity> {
