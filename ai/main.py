@@ -85,6 +85,7 @@ class WeightedScorer:
             alpha=alpha,
             beta=beta,
             gamma=gamma,
+            delta=delta,
         )
         return score[0]
 

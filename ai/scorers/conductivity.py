@@ -145,6 +145,7 @@ class ConductivityScorer:
             # Length scaling: higher length means better score adjustment
             adjusted_meaningfulness = meaningfulness * length_factor
 
+            print(f"MEAN: Processing comment: {feedback} - value: {adjusted_meaningfulness}")
             scores.append(adjusted_meaningfulness)
 
         # Apply final normalization to range [0, 1]

@@ -68,7 +68,7 @@ class ComplexityScorer:
             + (avg_sentence_length + syntactic_depth) * 0.25
         )
         score = max(0, min(100, score))  # Keep it within range [0, 100]
-
+        print(f"COMP: Processing comment: {text} - value: {score}")
         return score
 
     def complexity_score_batch(

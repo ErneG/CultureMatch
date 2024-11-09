@@ -34,6 +34,7 @@ class SentimentScorer:
 
         for text in input_texts:
             sentiment_res = self.sgm_sentiment_instance.sentiment_analysis_single(text)
+            print(f"SENT: Processing comment: {text} - value: {sentiment_res}")
             sentiment_results.append(sentiment_res)
 
         return sentiment_results

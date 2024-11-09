@@ -82,6 +82,7 @@ class CategoryScorer:
             if category_score == None:
                 category_score = 0
 
+            print(f"CATG: Processing comment: {text} - value: {category_score}")
             category_results.append(category_score)
 
         return category_results
