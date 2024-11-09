@@ -3,7 +3,7 @@ import json
 import boto3
 
 
-class SageMakerClient:
+class SageMakerSentiment:
     def __init__(self) -> None:
         self.newline = "\n"
         self.bold = "\033[1m"
@@ -52,13 +52,13 @@ class SageMakerClient:
         except Exception as e:
             print(e)
 
-        print(
-            f"Inference:{self.newline}"
-            f"Input text: '{input_text}'{self.newline}"
-            f"Model prediction: {probabilities}{self.newline}"
-            f"Labels: {labels}{self.newline}"
-            f"Predicted Label: {self.bold}{predicted_label}{self.unbold}{self.newline}"
-        )
+        # print(
+        #     f"Inference:{self.newline}"
+        #     f"Input text: '{input_text}'{self.newline}"
+        #     f"Model prediction: {probabilities}{self.newline}"
+        #     f"Labels: {labels}{self.newline}"
+        #     f"Predicted Label: {self.bold}{predicted_label}{self.unbold}{self.newline}"
+        # )
 
         # Format the returned label and score
         if predicted_label == "LABEL_0":
