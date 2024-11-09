@@ -35,24 +35,27 @@ export function SelectionCard({
     <motion.div
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.98 }}
-      className={`w-full md:w-1/2 ${isSelected ? 'border-2 border-purple-500 rounded-md' : ''}`}>
+      className={`w-full  ${isSelected ? 'border-2 border-purple-500 rounded-md' : ''}`}>
       <Button
         variant="outline"
-        className="w-full h-full text-left flex flex-col items-start justify-between p-6"
+        className="w-full h-full text-left flex flex-col items-start justify-between p-3 sm:p-4 md:p-6"
         onClick={() => onSelect(type)}>
-        <div>
-          <Icon className={`w-12 h-12 mb-4 text-${accentColor}`} />
-          <div className="text-2xl font-semibold mb-2">{title}</div>
-          <div className="text-sm text-muted-foreground space-y-2 ">
+        <div className="w-full">
+          <Icon className={`w-32 h-32 mb-3 md:mb-4 text-${accentColor}`} />
+          <div className="text-base sm:text-xl xl:text-2xl font-semibold mb-2">{title}</div>
+          <div className="text-xs md:text-sm text-muted-foreground space-y-2 break-words">
             {features.map((feature, index) => (
               <p key={index} className="flex flex-row gap-1 items-center">
-                <feature.icon className="inline mr-2 w-4 h-4" />
-                {feature.text}
+                <feature.icon className="inline shrink-0 mr-0.5 w-4 h-4" />
+                <span className="break-words">{feature.text}</span>
               </p>
             ))}
           </div>
         </div>
-        <div className={`text-sm font-medium text-${accentColor} mt-4`}>{tagline}</div>
+        <div
+          className={` text-xs md:text-sm font-medium text-${accentColor} mt-3 md:mt-4 break-words`}>
+          {tagline}
+        </div>
       </Button>
     </motion.div>
   );
