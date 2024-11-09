@@ -16,7 +16,7 @@ const companyFeatures = [
 
 const jobSeekerFeatures = [
   { icon: ThumbsUp, text: 'Swipe through curated job offers' },
-  { icon: Search, text: 'Discover opportunities that match your skills' },
+  { icon: Search, text: 'Match opportunities to your skills' },
   { icon: Building2, text: 'Connect with top companies' },
 ];
 
@@ -39,49 +39,54 @@ export default function Component() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-indigo-200 flex items-center justify-center p-4">
-      <Card className="w-full max-w-6xl bg-white shadow-xl rounded-xl animate-in fade-in zoom-in-50">
-        <CardHeader>
-          <CardTitle className="text-3xl text-center">Welcome to CultureMatch</CardTitle>
-          <CardDescription className="text-center text-lg">
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-indigo-200 flex items-center justify-center p-4 md:p-6 lg:p-8">
+      <Card className="w-full max-w-7xl mx-auto bg-white shadow-xl rounded-xl animate-in fade-in zoom-in-50">
+        <CardHeader className="p-4 md:p-6">
+          <CardTitle className="text-2xl md:text-3xl text-center">
+            Welcome to CultureMatch
+          </CardTitle>
+          <CardDescription className="text-center text-base md:text-lg">
             Choose how you want to use our platform
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col md:flex-row gap-6 items-stretch justify-center p-6">
-          <SelectionCard
-            type="COMPANY"
-            selected={selected}
-            icon={Building2}
-            title="Company"
-            features={companyFeatures}
-            tagline="Streamline your hiring process"
-            accentColor="purple-600"
-            onSelect={setSelected}
-          />
-          <SelectionCard
-            type="JOBSEEKER"
-            selected={selected}
-            icon={Briefcase}
-            title="Job Seeker"
-            features={jobSeekerFeatures}
-            tagline="Find your dream job with ease"
-            accentColor="indigo-600"
-            onSelect={setSelected}
-          />
-          <SelectionCard
-            type="EMPLOYEE"
-            selected={selected}
-            icon={TestTube2}
-            title="Demo: Employee Form"
-            features={employeeFeatures}
-            tagline="Preview the employee experience (Demo Only)"
-            accentColor="blue-600"
-            onSelect={setSelected}
-          />
+        <CardContent className="p-4 md:p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 place-items-center">
+            <SelectionCard
+              type="COMPANY"
+              selected={selected}
+              icon={Building2}
+              title="Company"
+              features={companyFeatures}
+              tagline="Streamline your hiring process"
+              accentColor="purple-600"
+              onSelect={setSelected}
+            />
+            <SelectionCard
+              type="JOBSEEKER"
+              selected={selected}
+              icon={Briefcase}
+              title="Job Seeker"
+              features={jobSeekerFeatures}
+              tagline="Find your dream job with ease"
+              accentColor="indigo-600"
+              onSelect={setSelected}
+            />
+            <SelectionCard
+              type="EMPLOYEE"
+              selected={selected}
+              icon={TestTube2}
+              title="Demo: Employee Form"
+              features={employeeFeatures}
+              tagline="Preview the employee experience"
+              accentColor="blue-600"
+              onSelect={setSelected}
+            />
+          </div>
+=
         </CardContent>
-        <div className="p-6 flex justify-center">
+        <div className="p-4 md:p-6 flex justify-center">
           <Button
-            className="w-full md:w-auto px-8 py-2 text-base"
+            className="w-full md:w-auto px-6 md:px-8 py-2 text-base"
             disabled={!selected}
             onClick={handleContinue}>
             Continue as {selected ? OnboardingType[selected] : '...'}
