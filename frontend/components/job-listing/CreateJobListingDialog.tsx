@@ -93,7 +93,9 @@ export const CreateJobListingDialog: React.FC<CreateJobListingDialogProps> = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Create Job Listing</Button>
+        <Button>
+          Create <span className="hidden md:inline">Job Listing</span>
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
