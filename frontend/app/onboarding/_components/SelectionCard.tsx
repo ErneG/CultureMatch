@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { LucideIcon } from 'lucide-react';
-import { OnboardingType } from '../page';
+import { OnboardingTypeKey } from '../types';
 
 interface Feature {
   icon: LucideIcon;
@@ -9,14 +9,14 @@ interface Feature {
 }
 
 interface SelectionCardProps {
-  type: OnboardingType;
-  selected: OnboardingType | null;
+  type: OnboardingTypeKey;
+  selected: OnboardingTypeKey | null;
   icon: LucideIcon;
   title: string;
   features: Feature[];
   tagline: string;
   accentColor: string;
-  onSelect: (type: OnboardingType) => void;
+  onSelect: (type: OnboardingTypeKey) => void;
 }
 
 export function SelectionCard({
@@ -43,9 +43,9 @@ export function SelectionCard({
         <div>
           <Icon className={`w-12 h-12 mb-4 text-${accentColor}`} />
           <div className="text-2xl font-semibold mb-2">{title}</div>
-          <div className="text-sm text-muted-foreground space-y-2">
+          <div className="text-sm text-muted-foreground space-y-2 ">
             {features.map((feature, index) => (
-              <p key={index}>
+              <p key={index} className="flex flex-row gap-1 items-center">
                 <feature.icon className="inline mr-2 w-4 h-4" />
                 {feature.text}
               </p>
