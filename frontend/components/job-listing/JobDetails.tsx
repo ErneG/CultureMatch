@@ -1,85 +1,178 @@
-import { useWindowWidth } from '@/hooks/useWindownWidth';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { ENTERPRISE_COMPANY_NAME } from '@/config/constants';
+import { Separator } from '@/components/ui/separator';
+import { Calendar, MapPin, Building2, Clock, Banknote, Users, ArrowLeftIcon } from 'lucide-react';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { JobListing } from '@/types/entities';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useEffect, useState } from 'react';
 
 interface JobDetailsProps {
   job: JobListing | null;
+  handleBackToList: () => void;
 }
 
-export const JobDetails: React.FC<JobDetailsProps> = ({ job }) => {
-  const [displayedJob, setDisplayedJob] = useState<JobListing | null>(job);
-  const windowWidth = useWindowWidth();
+export const JobDetails: React.FC<JobDetailsProps> = ({ job, handleBackToList }) => {
+  if (!job) return null;
 
-  const isDesktop = windowWidth !== undefined && windowWidth >= 765;
+  return (
+    <ScrollArea className="h-full">
+      <div className="space-y-6 lg:p-6">
+        {/* Header Section */}
+        <div className="space-y-4">
+          <div className="flex items-start gap-2">
+            <div className="w-fit h-fit">
+              <ArrowLeftIcon
+                className="w-[1.5rem] h-[1.5rem] cursor-pointer text-neutral-800 hover:text-neutral-600 md:hidden"
+                onClick={handleBackToList}
+              />
+            </div>
+            <div className="space-y-1">
+              <h2 className="text-2xl font-bold tracking-tight">{job.title}</h2>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Building2 className="h-4 w-4" />
+                <span>{ENTERPRISE_COMPANY_NAME}</span>
+              </div>
+            </div>
+            <Badge variant="default" className="text-sm">
+              Open
+            </Badge>
+          </div>
 
-  useEffect(() => {
-    if (isDesktop) {
-      const timeout = setTimeout(() => setDisplayedJob(job), 300);
-      return () => clearTimeout(timeout);
-    } else {
-      setDisplayedJob(job);
-    }
-  }, [job, isDesktop]);
-
-  const content = displayedJob ? (
-    <>
-      <h2 className="text-2xl font-bold">{displayedJob.title}</h2>
-      <p className="text-lg">{displayedJob.location}</p>
-      {displayedJob.description && <p>{displayedJob.description}</p>}
-      {displayedJob.salaryMin && displayedJob.salaryMax && (
-        <p>
-          Salary: ${displayedJob.salaryMin} - ${displayedJob.salaryMax}
-        </p>
-      )}
-      {displayedJob.salaryType && <p>Salary Type: {displayedJob.salaryType}</p>}
-      {displayedJob.hoursRequirement && <p>Hours Requirement: {displayedJob.hoursRequirement}</p>}
-      {displayedJob.contactInfo && <p>Contact Info: {displayedJob.contactInfo}</p>}
-      {displayedJob.jobForm && <p>Job Form: {displayedJob.jobForm}</p>}
-      {displayedJob.jobType !== undefined && <p>Job Type: {displayedJob.jobType}</p>}
-      {displayedJob.skills && displayedJob.skills.length > 0 && (
-        <div>
-          <h3 className="font-semibold">Skills:</h3>
-          <ul className="list-disc list-inside">
-            {displayedJob.skills.map((skill, index) => (
-              <li key={index}>{skill}</li>
-            ))}
-          </ul>
+          <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-1">
+              <MapPin className="h-4 w-4" />
+              {job.location}
+            </div>
+            {job.closingDate && (
+              <div className="flex items-center gap-1">
+                <Calendar className="h-4 w-4" />
+                Closes {new Date(job.closingDate).toLocaleDateString()}
+              </div>
+            )}
+            {job.hoursRequirement && (
+              <div className="flex items-center gap-1">
+                <Clock className="h-4 w-4" />
+                {job.hoursRequirement}
+              </div>
+            )}
+          </div>
         </div>
-      )}
-      {displayedJob.benefits && displayedJob.benefits.length > 0 && (
-        <div>
-          <h3 className="font-semibold">Benefits:</h3>
-          <ul className="list-disc list-inside">
-            {displayedJob.benefits.map((benefit, index) => (
-              <li key={index}>{benefit}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {displayedJob.closingDate && (
-        <p>Closing Date: {new Date(displayedJob.closingDate).toLocaleDateString()}</p>
-      )}
-    </>
-  ) : (
-    <div className="p-4">Select a job listing to see the details.</div>
+
+        <Separator />
+
+        {/* Salary Information */}
+        {(job.salaryMin || job.salaryMax) && (
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2">
+                <Banknote className="h-5 w-5" />
+                Compensation
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-4">
+                {job.salaryMin && job.salaryMax && (
+                  <div>
+                    <p className="text-2xl font-bold">
+                      ${job.salaryMin.toLocaleString()} - ${job.salaryMax.toLocaleString()}
+                    </p>
+                    <p className="text-sm text-muted-foreground">{job.salaryType}</p>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Description */}
+        {job.description && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Description</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm leading-relaxed">{job.description}</p>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Skills Section */}
+        {job.skills && job.skills.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Required Skills</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                {job.skills.map((skill, index) => (
+                  <HoverCard key={index}>
+                    <HoverCardTrigger>
+                      <Badge variant="secondary" className="cursor-help">
+                        {skill}
+                      </Badge>
+                    </HoverCardTrigger>
+                    <HoverCardContent>
+                      <div className="space-y-2">
+                        <p className="text-sm font-semibold">{skill}</p>
+                        <p className="text-sm text-muted-foreground">
+                          This skill is required for the position
+                        </p>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Benefits Section */}
+        {job.benefits && job.benefits.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                Benefits
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {job.benefits.map((benefit, index) => (
+                  <li key={index} className="flex items-center gap-2">
+                    <Badge
+                      variant="outline"
+                      className="h-6 w-6 rounded-full p-0 flex items-center justify-center">
+                      ✓
+                    </Badge>
+                    {benefit}
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Contact Information */}
+        {job.contactInfo && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Contact Information</CardTitle>
+            </CardHeader>
+            <CardContent className="flex items-center gap-4">
+              <Avatar>
+                <AvatarImage src="/placeholder-avatar.jpg" />
+                <AvatarFallback>HR</AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="text-base md:text-lg font-medium">{job.contactInfo}</p>
+                <p className="text-sm text-muted-foreground">Human Resources</p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    </ScrollArea>
   );
-
-  if (isDesktop) {
-    return (
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={displayedJob ? displayedJob.id : 'no-job'}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className="p-4 space-y-4">
-          {content}
-        </motion.div>
-      </AnimatePresence>
-    );
-  } else {
-    return <div className="p-4 space-y-4">{content}</div>;
-  }
 };
