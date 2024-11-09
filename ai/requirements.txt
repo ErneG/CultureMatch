@@ -4,3 +4,5 @@ numpy
 pandas
 scikit-learn
 textstat
+python-dotenv
+sagemaker>=2.48.0
