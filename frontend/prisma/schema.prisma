@@ -1,15 +1,175 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["prismaSchemaFolder"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model Entity {
+  id                  Int                @id @default(autoincrement())
+  name                String             @db.VarChar(255)
+  type                Int @default(0)
+  email               String?            @db.VarChar(255)
+  phone               String?            @db.VarChar(50)
+  country             String?            @db.Char(3)
+  registrationNumber  String?            @unique @db.VarChar(255)
+  createdAt           DateTime           @default(now()) @db.Timestamp(6)
+  updatedAt           DateTime           @default(now()) @db.Timestamp(6)
+  isActive            Boolean?           @default(true)
+
+  EntityProfile       EntityProfile?
+  JobListings         JobListing[]
+  EntityTraits        EntityTrait[]
+  Surveys             Survey[]
+
+  @@map("Entity")
+}
+
+model EntityTrait {
+  id                  Int                @id @default(autoincrement())
+  entityId            Int
+  indicator           Int
+  value               Decimal?           @db.Decimal(3, 2)
+  createdAt           DateTime           @default(now()) @db.Timestamp(6)
+  updatedAt           DateTime           @default(now()) @db.Timestamp(6)
+
+  Entity              Entity             @relation(fields: [entityId], references: [id])
+
+  @@map("EntityTrait")
+}
+
+model EntityProfile {
+  entityId            Int                @id @default(autoincrement())
+  tagline             String?            @db.VarChar(255)
+  description         String?
+  website             String?            @db.VarChar(255)
+  size                String?            @db.VarChar(50)
+  foundingDate        DateTime?
+  location            String?            @db.VarChar(255)
+  industry            Int?
+  specialties         String?
+  logoUrl             String?            @db.VarChar(255)
+  socialMediaLinks    Json?
+  createdAt           DateTime           @default(now()) @db.Timestamp(6)
+  updatedAt           DateTime           @default(now()) @db.Timestamp(6)
+
+  Entity              Entity             @relation(fields: [entityId], references: [id])
+
+  @@map("EntityProfile")
+}
+
+model JobListing {
+  id                  Int                @id @default(autoincrement())
+  entityId            Int
+  title               String             @db.VarChar(255)
+  description         String?
+  salaryMin           Decimal?           @db.Decimal(10, 2)
+  salaryMax           Decimal?           @db.Decimal(10, 2)
+  salaryType          Int?
+  location            String?            @db.VarChar(255)
+  hoursRequirement    String?            @db.VarChar(50)
+  contactInfo         String?            @db.VarChar(255)
+  jobForm             Int?
+  jobType             Int?               @default(0)
+  isActive            Boolean?           @default(true)
+  postedAt            DateTime           @default(now()) @db.Timestamp(6)
+  updatedAt           DateTime           @default(now()) @db.Timestamp(6)
+  closingDate         DateTime?
+  skills              String[]
+  benefits            String[]
+
+  Entity              Entity             @relation(fields: [entityId], references: [id])
+
+  @@map("JobListing")
+}
+
+model Survey {
+  id                  Int                @id @default(autoincrement())
+  entityId            Int?
+  title               String             @db.VarChar(255)
+  description         String?
+  createdAt           DateTime           @default(now()) @db.Timestamp(6)
+  updatedAt           DateTime           @default(now()) @db.Timestamp(6)
+  isActive            Boolean?           @default(true)
+  userId              Int?
+  type                Int?
+
+  Entity              Entity?            @relation(fields: [entityId], references: [id])
+  User                User?              @relation(fields: [userId], references: [id])
+  SurveyQuestions     SurveyQuestion[]
+  SurveyResponses     SurveyResponse[]
+
+  @@map("Survey")
+}
+
+model SurveyQuestion {
+  id                  Int                @id @default(autoincrement())
+  surveyId            Int
+  title               String?            @db.VarChar(255)
+  description         String?
+  type                String             @db.VarChar(50)
+  isRequired          Boolean?           @default(false)
+  position            Int
+  settings            Json?
+  createdAt           DateTime           @default(now()) @db.Timestamp(6)
+  updatedAt           DateTime           @default(now()) @db.Timestamp(6)
+
+  Survey              Survey             @relation(fields: [surveyId], references: [id])
+  SurveyResponseItems SurveyResponseItem[]
+
+  @@map("SurveyQuestion")
+}
+
+model SurveyResponse {
+  id                  Int                @id @default(autoincrement())
+  surveyId            Int
+  respondentId        String             @db.Uuid
+  createdAt           DateTime           @default(now()) @db.Timestamp(6)
+  updatedAt           DateTime           @default(now()) @db.Timestamp(6)
+
+  Survey              Survey             @relation(fields: [surveyId], references: [id])
+  SurveyResponseItems SurveyResponseItem[]
+
+  @@map("SurveyResponse")
+}
+
+model SurveyResponseItem {
+  id                  Int                @id @default(autoincrement())
+  surveyResponseId    Int
+  surveyQuestionId    Int
+  responseData        Json?
+  createdAt           DateTime           @default(now()) @db.Timestamp(6)
+  updatedAt           DateTime           @default(now()) @db.Timestamp(6)
+
+  SurveyResponse      SurveyResponse     @relation(fields: [surveyResponseId], references: [id])
+  SurveyQuestion      SurveyQuestion     @relation(fields: [surveyQuestionId], references: [id])
+  SurveyResponseItemReports SurveyResponseItemReport[]
+
+  @@map("SurveyResponseItem")
+}
+
+model SurveyResponseItemReport {
+  id                  Int                @id @default(autoincrement())
+  responseItemId      Int
+  weight              Decimal?           @db.Decimal(5, 2)
+  keywords            String[]
+  isDeleted           Boolean?           @default(false)
+  createdAt           DateTime           @default(now()) @db.Timestamp(6)
+  updatedAt           DateTime           @default(now()) @db.Timestamp(6)
+
+  SurveyResponseItem  SurveyResponseItem @relation(fields: [responseItemId], references: [id])
+
+  @@map("SurveyResponseItemReport")
+}
+
+model User {
+  id                  Int                @id @default(autoincrement())
+  otherFields         String?            @db.VarChar(255)
+
+  Surveys             Survey[]
+
+  @@map("User")
 }
