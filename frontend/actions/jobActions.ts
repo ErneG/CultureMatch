@@ -12,6 +12,7 @@ export async function fetchJobListings(): Promise<JobListing[]> {
 
   return jobs.map((job) => ({
     ...job,
+
     salaryMin: job.salaryMin ? job.salaryMin.toNumber() : null,
     salaryMax: job.salaryMax ? job.salaryMax.toNumber() : null,
     postedAt: job.postedAt.toISOString(),

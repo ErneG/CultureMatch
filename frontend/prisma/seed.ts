@@ -1,4 +1,5 @@
 import { PrismaClient, Prisma } from '@prisma/client';
+import { v4 as uuidv4 } from 'uuid'; // Import the uuid library
 
 const prisma = new PrismaClient();
 
@@ -552,6 +553,307 @@ async function main() {
   }
 
   console.log('Database has been seeded with 10 companies and 20 unique positions per company.');
+
+  interface EmployeeSurveyQuestionInterface {
+    title: string;
+    position: number;
+    type: string;
+  }
+
+  // Define survey questions using the interface
+  const surveyQuestions: EmployeeSurveyQuestionInterface[] = [
+    {
+      title:
+        'My current workspace setup (collaborative or private) supports my productivity and comfort.',
+      position: 1,
+      type: 'happiness',
+    },
+    {
+      title: 'I feel a strong sense of connection with my team.',
+      position: 2,
+      type: 'belonging',
+    },
+    {
+      title:
+        'My company is genuinely committed to sustainability and social responsibility initiatives.',
+      position: 3,
+      type: 'purpose',
+    },
+    {
+      title: 'There are opportunities in the company for community involvement and volunteering.',
+      position: 4,
+      type: 'purpose',
+    },
+    {
+      title: 'The company has clear policies supporting diversity, equity, and inclusion.',
+      position: 5,
+      type: 'inclusion',
+    },
+    {
+      title: 'There are regular opportunities for learning and development within the company.',
+      position: 6,
+      type: 'learning',
+    },
+    {
+      title: 'I receive mentorship and guidance from managers that support my growth.',
+      position: 7,
+      type: 'support',
+    },
+    {
+      title: 'My role includes regular opportunities for skills development and training.',
+      position: 8,
+      type: 'learning',
+    },
+    {
+      title: 'I have flexibility in my work hours and/or remote work options.',
+      position: 9,
+      type: 'flexibility',
+    },
+    {
+      title: 'I am able to maintain a healthy work-life balance at my current job.',
+      position: 10,
+      type: 'satisfaction',
+    },
+    {
+      title: 'My work aligns with a sense of personal passion or purpose.',
+      position: 11,
+      type: 'purpose',
+    },
+    {
+      title: 'I am encouraged to take on new challenges and experience a variety of tasks.',
+      position: 12,
+      type: 'achievement',
+    },
+    {
+      title: 'I receive frequent feedback and recognition for my work.',
+      position: 13,
+      type: 'appreciation',
+    },
+    {
+      title: 'I feel valued and acknowledged for my individual contributions.',
+      position: 14,
+      type: 'appreciation',
+    },
+    {
+      title:
+        'There are clear communication channels and regular check-ins with my team and manager.',
+      position: 15,
+      type: 'management',
+    },
+    {
+      title: 'There is open and transparent communication from both team members and leadership.',
+      position: 16,
+      type: 'pressure',
+    },
+    {
+      title:
+        'The work environment encourages creativity and innovation through brainstorming sessions and collaborative spaces.',
+      position: 17,
+      type: 'energy',
+    },
+    {
+      title: 'The dress code at my workplace allows me to feel comfortable and productive.',
+      position: 18,
+      type: 'happiness',
+    },
+    {
+      title: 'I feel safe and respected by my coworkers.',
+      position: 19,
+      type: 'trust',
+    },
+    {
+      title: 'I feel fairly compensated for the work I do.',
+      position: 20,
+      type: 'compensation',
+    },
+  ];
+
+  // Create survey using typed survey questions
+  const survey = await prisma.survey.create({
+    data: {
+      title: 'Employee Questionnaire',
+      isActive: true,
+      SurveyQuestions: {
+        create: surveyQuestions.map((question) => ({
+          title: question.title,
+          position: question.position,
+          type: question.type,
+        })),
+      },
+    },
+  });
+
+  // Fetch the survey questions to use their IDs
+  const questions = await prisma.surveyQuestion.findMany({
+    where: { surveyId: survey.id },
+    orderBy: { position: 'asc' },
+  });
+
+  // List of sample comments with alternatives
+  const sampleCommentAlternatives = [
+    [
+      'The setup supports my productivity well.',
+      'My workspace is optimal for getting work done.',
+      'I feel at ease and productive in my current workspace.',
+      'The current work setup enhances my comfort and productivity.',
+      'I am very satisfied with the workspace environment.',
+    ],
+    [
+      'I feel connected to my team.',
+      'My team bonds are strong and supportive.',
+      "There's a great sense of unity in my team.",
+      'I am closely connected with my coworkers.',
+      'The team dynamics here are excellent.',
+    ],
+    [
+      'The company is committed to sustainability.',
+      'Sustainability efforts by the company are commendable.',
+      'The company prioritizes eco-friendly practices.',
+      'There is a strong focus on sustainability here.',
+      'Our company takes sustainability seriously.',
+    ],
+    [
+      'There are volunteering opportunities available.',
+      'The company encourages community involvement.',
+      'Many chances for volunteering are present.',
+      'Community service opportunities are plentiful.',
+      'Engagement in volunteering activities is promoted.',
+    ],
+    [
+      'Company policies support diversity.',
+      'Diversity policies here are well-implemented.',
+      'The company fosters a diverse work environment.',
+      'Equity and inclusion are part of the culture.',
+      'Diversity is a key focus at our workplace.',
+    ],
+    [
+      'Learning resources are accessible.',
+      'The company provides ample learning opportunities.',
+      'I have access to great learning programs.',
+      'Professional development is easily accessible.',
+      'Learning and development resources are excellent.',
+    ],
+    [
+      'Mentorship supports my growth.',
+      'Guidance from mentors is invaluable.',
+      'Mentorship is integral to my career growth.',
+      'I receive great guidance from my managers.',
+      'Mentorship here has greatly benefited me.',
+    ],
+    [
+      'Training opportunities are relevant.',
+      'I gain a lot from the training sessions.',
+      'Training programs here are insightful.',
+      'Training is specifically tailored to my needs.',
+      'The training offered is comprehensive and useful.',
+    ],
+    [
+      'I enjoy flexible work hours.',
+      'The flexibility in hours is beneficial.',
+      'Remote working is a convenient option.',
+      'Work hour flexibility supports my lifestyle.',
+      'My work hours here are very flexible.',
+    ],
+    [
+      'I maintain a healthy work-life balance.',
+      'Balancing work and life is easier here.',
+      'The job allows for a great personal life balance.',
+      'Work-life integration is possible in this role.',
+      'The company culture supports my personal balance.',
+    ],
+    [
+      'My work aligns with my passion.',
+      "I'm happy in a role that matches my interests.",
+      'This job fulfills a personal passion of mine.',
+      'My role is strongly tied to what I enjoy.',
+      "I find purpose in the work I'm doing.",
+    ],
+    [
+      "I'm encouraged to take on new challenges.",
+      "I'm given opportunities to explore new areas.",
+      "There's frequent encouragement to tackle new tasks.",
+      'Challenging tasks are part of my growth here.',
+      'Opportunities to stretch my skills are abundant.',
+    ],
+    [
+      'I receive feedback regularly.',
+      "There's a consistent flow of feedback in my role.",
+      'Feedback is a regular part of team communication.',
+      'Constructive feedback is regularly provided.',
+      'I am often acknowledged for my contributions.',
+    ],
+    [
+      'I feel valued by my contributions.',
+      'My work is appreciated and valued here.',
+      "There's a culture of acknowledging individual efforts.",
+      'I feel recognized for the work I do.',
+      'Contributions from individuals are widely respected.',
+    ],
+    [
+      'Communication is clear and regular.',
+      "There's consistent, open communication in my team.",
+      'Regular check-ins foster effective communication.',
+      'Team communication is structured and effective.',
+      'We engage in regular and thorough communication.',
+    ],
+    [
+      'Communication is open and transparent.',
+      "There's a lot of openness in communication here.",
+      'Leadership is clear and transparent with the team.',
+      'Transparency in communication is a norm here.',
+      'Team and leadership communication is straightforward.',
+    ],
+    [
+      'Creativity is encouraged.',
+      'Innovation is highly valued in the workspace.',
+      "There's a culture of creativity and new ideas.",
+      'The company supports creative thinking.',
+      'Brainstorming sessions boost innovative ideas.',
+    ],
+    [
+      'The dress code is comfortable.',
+      'I find the dress code very relaxed and flexible.',
+      "There's no pressure regarding what to wear.",
+      'The dress code allows for personal comfort.',
+      'I feel free to dress comfortably every day.',
+    ],
+    [
+      'I feel safe and respected by coworkers.',
+      "There's a culture of safety and mutual respect.",
+      'My teammates and I maintain trust and respect.',
+      'Respect and security are core aspects of our culture.',
+      'I trust my coworkers and feel at ease.',
+    ],
+    [
+      'Compensation is fair.',
+      'I feel fairly compensated for my work.',
+      'The pay is commensurate with my efforts.',
+      'My compensation reflects my job responsibilities.',
+      'Benefits and salary are satisfactory here.',
+    ],
+  ];
+
+  // Seed with 30 responses
+  for (let i = 0; i < 30; i++) {
+    await prisma.surveyResponse.create({
+      data: {
+        surveyId: survey.id,
+        respondentId: uuidv4(),
+        SurveyResponseItems: {
+          create: questions.map((question, index) => ({
+            responseData: {
+              response: Math.floor(Math.random() * 6) + 1, // Random rating from 1 to 6
+              comment: sampleCommentAlternatives[index][Math.floor(Math.random() * 5)], // Random comment from the list
+            },
+            surveyQuestionId: question.id, // Use the correct question ID
+            // surveyResponseId: survey.id, // Use the correct survey ID
+          })),
+        },
+      },
+    });
+  }
+
+  console.log('Database seeded with 30 survey responses');
 }
 
 main()

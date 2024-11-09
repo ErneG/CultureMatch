@@ -26,6 +26,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { JobListing } from '@/types/entities';
+import { Plus } from 'lucide-react';
 
 const jobListingSchema = z.object({
   title: z.string().min(2, { message: 'Title must be at least 2 characters.' }),
@@ -93,7 +94,10 @@ export const CreateJobListingDialog: React.FC<CreateJobListingDialogProps> = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Create Job Listing</Button>
+        <Button>
+          <Plus className=" h-4 w-4" />
+          Create
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
