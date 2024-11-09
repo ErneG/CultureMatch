@@ -3,7 +3,7 @@ import EnterpriseNavigation from './_components/EnterpriseNavigation';
 
 const EnterpriseLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <main>
+    <main className="mx-auto max-w-[1280px]">
       <EnterpriseNavigation />
       <div className="pt-[4rem]">{children}</div>
     </main>
