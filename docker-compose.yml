@@ -7,21 +7,21 @@ services:
         - DATABASE_URL=${DATABASE_URL}
     ports:
       - "59991:3000"
-    # container_name: frontend-b8koc4oc4ggc400skgg4o44s-201843285515
-    # restart: unless-stopped
-    # labels:
-    #   - coolify.managed=true
-    #   - traefik.enable=true
-    #   - traefik.http.middlewares.gzip.compress=true
-    #   - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
-    #   - traefik.http.routers.http-0-b8koc4oc4ggc400skgg4o44s-frontend.entryPoints=http
-    #   - traefik.http.routers.http-0-b8koc4oc4ggc400skgg4o44s-frontend.middlewares=redirect-to-https
-    #   - traefik.http.routers.http-0-b8koc4oc4ggc400skgg4o44s-frontend.rule=Host(`culturematch.ernests.dev`)
-    #   - traefik.http.routers.https-0-b8koc4oc4ggc400skgg4o44s-frontend.entryPoints=https
-    #   - traefik.http.routers.https-0-b8koc4oc4ggc400skgg4o44s-frontend.middlewares=gzip
-    #   - traefik.http.routers.https-0-b8koc4oc4ggc400skgg4o44s-frontend.rule=Host(`culturematch.ernests.dev`)
-    #   - traefik.http.routers.https-0-b8koc4oc4ggc400skgg4o44s-frontend.tls.certresolver=letsencrypt
-    #   - traefik.http.services.http-0-b8koc4oc4ggc400skgg4o44s-frontend.loadbalancer.server.port=3000
-    #   - traefik.http.services.https-0-b8koc4oc4ggc400skgg4o44s-frontend.loadbalancer.server.port=3000
-    # networks:
-    #   b8koc4oc4ggc400skgg4o44s: null
+    container_name: frontend-b8koc4oc4ggc400skgg4o44s-201843285515
+    restart: unless-stopped
+    labels:
+      - coolify.managed=true
+      - traefik.enable=true
+      - traefik.http.middlewares.gzip.compress=true
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+      - traefik.http.routers.http-0-b8koc4oc4ggc400skgg4o44s-frontend.entryPoints=http
+      - traefik.http.routers.http-0-b8koc4oc4ggc400skgg4o44s-frontend.middlewares=redirect-to-https
+      - traefik.http.routers.http-0-b8koc4oc4ggc400skgg4o44s-frontend.rule=Host(`culturematch.ernests.dev`)
+      - traefik.http.routers.https-0-b8koc4oc4ggc400skgg4o44s-frontend.entryPoints=https
+      - traefik.http.routers.https-0-b8koc4oc4ggc400skgg4o44s-frontend.middlewares=gzip
+      - traefik.http.routers.https-0-b8koc4oc4ggc400skgg4o44s-frontend.rule=Host(`culturematch.ernests.dev`)
+      - traefik.http.routers.https-0-b8koc4oc4ggc400skgg4o44s-frontend.tls.certresolver=letsencrypt
+      - traefik.http.services.http-0-b8koc4oc4ggc400skgg4o44s-frontend.loadbalancer.server.port=3000
+      - traefik.http.services.https-0-b8koc4oc4ggc400skgg4o44s-frontend.loadbalancer.server.port=3000
+    networks:
+      b8koc4oc4ggc400skgg4o44s: null
