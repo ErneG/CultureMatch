@@ -1,12 +1,15 @@
+// Swiper.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import { useSprings } from '@react-spring/web';
 import { useDrag } from '@use-gesture/react';
+import Confetti from 'react-confetti';
 
 import { X, Check } from 'lucide-react';
 import { SwipeCard } from './_components/SwipeCard';
 import { Job } from '@/types/job';
+import { EndCard } from './_components/EndCard';
 import { SwipeWayIndicator } from './_components/SwipeWayIndecator';
 
 // Mock data for job listings
@@ -59,6 +62,11 @@ export const Swiper: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [windowWidth, setWindowWidth] = useState(0);
 
+  // New state variables for end card and confetti fade-out
+  const [showEndCard, setShowEndCard] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [isFadingOut, setIsFadingOut] = useState(false); // for fade-out effect
+
   // Handle window resize and initial size
   useEffect(() => {
     const updateWidth = () => setWindowWidth(window.innerWidth);
@@ -84,19 +92,19 @@ export const Swiper: React.FC = () => {
       [index]: prev[index] === 1 ? 0 : 1,
     }));
   };
+
   const VELOCITY_THRESHOLD = 0.2;
   const DISTANCE_THRESHOLD = 0.25;
+
   // Handle swipe for accept/decline
   const bind = useDrag(
     ({ args: [index], active, movement: [mx], velocity: [vx], distance }) => {
-      const distanceMagnitude = Math.hypot(distance[0], distance[1]);
-      setIsDragging(distanceMagnitude > 5);
+      const distanceMagnitude = distance;
+      setIsDragging(distanceMagnitude[0] > 5);
 
-      // Determine swipe direction: 1 for right, -1 for left
       const dir = mx > 0 ? 1 : -1;
       setSwipeDir((prev) => ({ ...prev, [index]: active ? dir : 0 }));
 
-      // Determine if the swipe should dismiss the card
       const isSwipedFastEnough = Math.abs(vx) > VELOCITY_THRESHOLD;
       const isSwipedFarEnough = Math.abs(mx) > windowWidth * DISTANCE_THRESHOLD;
       const shouldDismissCard = !active && (isSwipedFastEnough || isSwipedFarEnough);
@@ -133,11 +141,20 @@ export const Swiper: React.FC = () => {
       });
 
       if (!active && gone.size === jobs.length) {
+        setShowConfetti(true); // Show confetti
+        setShowEndCard(true); // Show end card
+        setSwipeDir({});
+
+        // Start fade-out after 5 seconds
         setTimeout(() => {
-          gone.clear();
-          setSwipeDir({});
-          api.start((i) => to(i));
-        }, 600);
+          setIsFadingOut(true); // Trigger fade-out effect
+        }, 5000);
+
+        // Hide confetti completely after fade-out transition
+        setTimeout(() => {
+          setShowConfetti(false);
+          setIsFadingOut(false);
+        }, 5500); // 500ms for the fade-out duration
       }
     },
     {
@@ -147,39 +164,69 @@ export const Swiper: React.FC = () => {
     },
   );
 
-  // Don't render until we have window width
+  const handleRestart = () => {
+    gone.clear();
+    setShowEndCard(false);
+    setShowConfetti(false);
+    setIsFadingOut(false);
+    setSwipeDir({});
+    setCardPages({});
+    api.start((i) => to(i));
+  };
+
+  const handleNextPage = () => {
+    console.log('Navigating to the next page...');
+  };
+
   if (!windowWidth) return null;
 
   return (
-    <div className="flex items-start justify-center w-screen h-[100svh] bg-[#f5f5f5] overflow-hidden gap-4 ">
+    <div className="flex items-start justify-center w-screen h-[100svh] bg-[#f5f5f5] overflow-hidden gap-4">
+      {/* Confetti Effect */}
+      {showConfetti && (
+        <Confetti
+          width={windowWidth}
+          height={window.innerHeight}
+          opacity={isFadingOut ? 0 : 1} // Use `opacity` to control fade-out
+          className="transition-opacity duration-500" // CSS transition for fade-out
+        />
+      )}
+
       <div className="relative w-full h-[calc(100%-3rem)] max-w-md max-h-screen px-4 py-6">
         <div className="relative w-full h-full">
-          {springs.map((style, i) => (
-            <React.Fragment key={i}>
-              <SwipeCard
-                job={jobs[i]}
-                index={i}
-                style={style}
-                bind={bind}
-                handleCardClick={handleCardClick}
-                isFlipped={cardPages[i] === 1}
-                swipeDir={swipeDir[i] || 0}
-              />
-              {i === jobs.length - 1 && <SwipeWayIndicator swipeDir={swipeDir[i] || 0} />}
-            </React.Fragment>
-          ))}
+          {showEndCard ? (
+            <EndCard onRestart={handleRestart} onNextPage={handleNextPage} />
+          ) : (
+            springs.map((style, i) => (
+              <React.Fragment key={i}>
+                <SwipeCard
+                  job={jobs[i]}
+                  index={i}
+                  style={style}
+                  bind={bind}
+                  handleCardClick={handleCardClick}
+                  isFlipped={cardPages[i] === 1}
+                  swipeDir={swipeDir[i] || 0}
+                />
+                {i === jobs.length - 1 && <SwipeWayIndicator swipeDir={swipeDir[i] || 0} />}
+              </React.Fragment>
+            ))
+          )}
         </div>
       </div>
-      <div className="absolute bottom-3 left-0 right-0 text-center">
-        <div className="bg-background/80 backdrop-blur-sm mx-auto px-6 py-3 rounded-full inline-flex gap-6">
-          <p className="text-muted-foreground flex items-center gap-2">
-            <X className="h-4 w-4" /> Swipe left to decline
-          </p>
-          <p className="text-muted-foreground flex items-center gap-2">
-            <Check className="h-4 w-4" /> Swipe right to accept
-          </p>
+
+      {!showEndCard && (
+        <div className="absolute bottom-3 left-0 right-0 text-center">
+          <div className="bg-background/80 backdrop-blur-sm mx-auto px-6 py-3 rounded-full inline-flex gap-6">
+            <p className="text-muted-foreground flex items-center gap-2">
+              <X className="h-4 w-4" /> Swipe left to decline
+            </p>
+            <p className="text-muted-foreground flex items-center gap-2">
+              <Check className="h-4 w-4" /> Swipe right to accept
+            </p>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

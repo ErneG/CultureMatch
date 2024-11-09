@@ -37,6 +37,7 @@
     "lucide-react": "^0.456.0",
     "next": "14.2.17",
     "react": "^18",
+    "react-confetti": "^6.1.0",
     "react-dom": "^18",
     "react-hook-form": "^7.53.2",
     "react-toastify": "^10.0.6",
