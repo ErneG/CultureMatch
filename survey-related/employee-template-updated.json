@@ -71,6 +71,14 @@
       {
         "question": "The dress code at my workplace allows me to feel comfortable and productive.",
         "description": "Describe the dress code at work. Does it contribute to your comfort and productivity, or would you prefer a different approach?"
+      },
+      {
+        "question": "I feel safe and respected by my coworkers.",
+        "description": "How would you describe your level of trust in your team? Do you feel safe and respected by your colleagues?"
+      },
+      {
+        "question": "I feel fairly compensated for the work I do.",
+        "description": "Do you believe your salary and benefits match the effort and value you bring to the company? How does this impact your job satisfaction?"
       }
     ]
   }
