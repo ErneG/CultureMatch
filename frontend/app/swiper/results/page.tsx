@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, CheckCircle, XCircle } from 'lucide-react';
+import { ArrowLeft, CheckCircle, XCircle, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Job } from '@/types/job';
@@ -14,8 +14,14 @@ const AcceptedJobsPage: React.FC = () => {
 
   useEffect(() => {
     const storedJobs = localStorage.getItem('acceptedJobs');
+
     if (storedJobs) {
-      setAcceptedJobs(JSON.parse(storedJobs));
+      const parsedJobs = JSON.parse(storedJobs);
+      if (parsedJobs.length > 0) {
+        setAcceptedJobs(parsedJobs);
+      } else {
+        router.push('/swiper');
+      }
     } else {
       router.push('/swiper');
     }
@@ -29,6 +35,12 @@ const AcceptedJobsPage: React.FC = () => {
       })),
     [acceptedJobs],
   );
+
+  const handleRemoveJob = (jobId: string) => {
+    const updatedJobs = acceptedJobs.filter((job) => job.id.toString() !== jobId);
+    setAcceptedJobs(updatedJobs);
+    localStorage.setItem('acceptedJobs', JSON.stringify(updatedJobs));
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -49,15 +61,20 @@ const AcceptedJobsPage: React.FC = () => {
                 </div>
                 <p className="text-sm text-muted-foreground">{job.details}</p>
               </div>
-              <div className="ml-4">
+              <div className="ml-4 flex flex-col items-center">
                 {job.isMatch ? (
-                  <div className="flex flex-row">
-                    <Badge>It&apos;s a Match!</Badge>
+                  <div className="flex flex-row gap-2 items-center justify-center">
+                    <p>It&apos;s a Match!</p>
                     <CheckCircle className="h-8 w-8 text-green-500" />
                   </div>
                 ) : (
                   <XCircle className="h-8 w-8 text-red-500" />
                 )}
+                <button
+                  onClick={() => handleRemoveJob(String(job.id))}
+                  className="mt-2 text-red-500 hover:text-red-700">
+                  <Trash2 className="h-6 w-6" />
+                </button>
               </div>
             </Card>
           ))}

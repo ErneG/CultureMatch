@@ -154,7 +154,9 @@ export const Swiper: React.FC = () => {
 
       if (!active && gone.size === jobs.length) {
         setShowConfetti(true); // Show confetti
-        setShowEndCard(true); // Show end card
+        setTimeout(() => {
+          setShowEndCard(true);
+        }, 300); // Show end card after 500ms
         setSwipeDir({});
 
         // Start fade-out after 5 seconds
@@ -184,7 +186,7 @@ export const Swiper: React.FC = () => {
     setIsFadingOut(false);
     setSwipeDir({});
     setCardPages({});
-
+    clearAcceptedJobs();
     api.start((i) => to(i));
   };
 
