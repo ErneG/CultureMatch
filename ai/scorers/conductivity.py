@@ -150,8 +150,8 @@ class ConductivityScorer:
         # Apply final normalization to range [0, 1]
         scores = (scores - np.min(scores)) / (np.max(scores) - np.min(scores) + 1e-5)
 
-        for score, feedback in zip(scores, input_texts):
-            print(f"Feedback: {feedback}")
-            print(f"Meaninfulness Score: {score:.2f}\n")
+        # for score, feedback in zip(scores, input_texts):
+        #     print(f"Feedback: {feedback}")
+        #     print(f"Meaninfulness Score: {score:.2f}\n")
 
         return scores
