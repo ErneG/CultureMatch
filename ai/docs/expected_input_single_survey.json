@@ -1,0 +1,84 @@
+{
+    "responses": [
+        {
+            "question": "Do you approve of the CEO of the company?",
+            "rating": 3,
+            "comment": "The CEO's vision is clear, but communication could be better."
+        },
+        {
+            "question": "Overall, I am completely satisfied with my job.",
+            "rating": 4,
+            "comment": "I enjoy the challenges and opportunities for growth in my role."
+        },
+        {
+            "question": "My work has a clear sense of purpose.",
+            "rating": 5,
+            "comment": "I feel like my work directly contributes to the company's success."
+        },
+        {
+            "question": "I feel happy at work most of the time.",
+            "rating": 5,
+            "comment": "The positive work environment contributes to my overall happiness."
+        },
+        {
+            "question": "I feel stressed at work most of the time.",
+            "rating": 2,
+            "comment": "The workload is manageable, and I rarely feel stressed."
+        },
+        {
+            "question": "I am paid fairly for my work.",
+            "rating": 4,
+            "comment": "Compensation is competitive, and I feel valued for my contributions."
+        },
+        {
+            "question": "There are people at work who give me support and encouragement.",
+            "rating": 6,
+            "comment": "My colleagues and manager are very supportive and encouraging."
+        },
+        {
+            "question": "There are people at work who appreciate me as a person.",
+            "rating": 5,
+            "comment": "I feel appreciated and respected by my coworkers."
+        },
+        {
+            "question": "I can trust people in my company.",
+            "rating": 5,
+            "comment": "I have built strong relationships based on trust with my colleagues."
+        },
+        {
+            "question": "I feel a sense of belonging in my company.",
+            "rating": 6,
+            "comment": "The company culture fosters a strong sense of belonging."
+        },
+        {
+            "question": "My manager helps me succeed.",
+            "rating": 6,
+            "comment": "My manager provides guidance and resources for my professional development."
+        },
+        {
+            "question": "My work environment feels inclusive and respectful of all people.",
+            "rating": 5,
+            "comment": "The company values diversity and promotes an inclusive work environment."
+        },
+        {
+            "question": "My work has the time and location flexibility I need.",
+            "rating": 5,
+            "comment": "I have the flexibility to manage my work schedule and location effectively."
+        },
+        {
+            "question": "In most of my work tasks, I feel energized.",
+            "rating": 4,
+            "comment": "My work is challenging and keeps me engaged."
+        },
+        {
+            "question": "I am achieving most of my goals at work.",
+            "rating": 5,
+            "comment": "I am consistently meeting my goals and contributing to team success."
+        },
+        {
+            "question": "I often learn something at work.",
+            "rating": 6,
+            "comment": "The company provides opportunities for continuous learning and development."
+        }
+    ]
+}
