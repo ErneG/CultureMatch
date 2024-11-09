@@ -1,63 +1,105 @@
 'use client';
 
 import RadialChart from '@/components/charts/RadialChart';
+import TraitScoreCard from '@/components/TraitScoreCard';
 import { ChartConfig } from '@/components/ui/chart';
-const chartData = [{ month: 'january', desktop: 1260, mobile: 570 }];
+import { SmileIcon, TargetIcon, StressIcon, ThumbsUpIcon } from '@/components/icons/TraitIcon';
+
+const chartData = {
+  lastSurveyResponseCount: 41,
+  lastSurveyResponsePercentage: 99,
+  matchesMade: 41,
+  matchesMadePercentage: 65,
+  matchesOutperforming: 41,
+  matchesOutperformingPercentage: 27,
+  traitScores: {
+    happiness: 80,
+    purpose: 91,
+    satisfaction: 73,
+    stressFree: 28,
+  },
+};
 
 const chartConfig = {
-  desktop: {
+  red: {
     label: 'Desktop',
     color: 'hsl(var(--chart-1))',
   },
-  mobile: {
+  green: {
     label: 'Mobile',
     color: 'hsl(var(--chart-2))',
   },
 } satisfies ChartConfig;
+const dataKeys = { red: 'color-red', green: 'color-green' } satisfies { [key: string]: string };
+
+const normalizedChartData = (value: number) => {
+  return [
+    {
+      green: value,
+      red: 100 - value,
+    },
+  ];
+};
 
 const SummaryPage = () => {
   return (
-    <section className="grid grid-cols-12 gap-5">
-      <h1 className="col-span-12 font-semibold text-5xl pb-5">Summary</h1>
+    <section className="grid grid-cols-12 gap-5 mb-5 p-4">
+      <h1 className="col-span-12 font-semibold text-5xl pb-5">Overview</h1>
       <RadialChart
-        title="Happiness"
-        description="January - June 2024"
-        data={chartData}
+        title="Employee Activity"
+        description="Last survey response count"
+        data={normalizedChartData(chartData.lastSurveyResponsePercentage)}
         config={chartConfig}
-        dataKeys={{ desktop: 'color-desktop', mobile: 'color-mobile' }}
-        middleText="Happiness"
-        middleValue={1830}
+        dataKeys={dataKeys}
+        middleText={`${chartData.lastSurveyResponsePercentage}% of employees`}
+        middleValue={chartData.lastSurveyResponseCount}
         footerDescription="How enjoyable people find their day-to-day life at work"
       />
       <RadialChart
-        title="Purpose"
-        description="January - June 2024"
-        data={chartData}
+        title="Match Score"
+        description="Jobseekers had a match"
+        data={normalizedChartData(chartData.matchesMadePercentage)}
         config={chartConfig}
-        dataKeys={{ desktop: 'color-desktop', mobile: 'color-mobile' }}
-        middleText="Total"
-        middleValue={chartData[0].desktop + chartData[0].mobile}
+        dataKeys={dataKeys}
+        middleText={`${chartData.matchesMadePercentage}% of reached users`}
+        middleValue={chartData.matchesMade}
         footerDescription="How meaningful people find their work"
       />
       <RadialChart
-        title="Satisfaction"
-        description="January - June 2024"
-        data={chartData}
+        title="Growth Potential"
+        description="Matches that outperform your value scores"
+        data={normalizedChartData(chartData.matchesOutperformingPercentage)}
         config={chartConfig}
-        dataKeys={{ desktop: 'color-desktop', mobile: 'color-mobile' }}
-        middleText="Total"
-        middleValue={chartData[0].desktop + chartData[0].mobile}
+        dataKeys={dataKeys}
+        middleText={`${chartData.matchesOutperformingPercentage}% of matches`}
+        middleValue={chartData.matchesOutperforming}
         footerDescription="How content people feel with the way things are at work"
       />
-      <RadialChart
+
+      <h1 className="col-span-12 font-semibold text-5xl mt-10 pb-5">Employee Well-Being</h1>
+      <TraitScoreCard
+        title="Happiness"
+        description="Overall employee well-being"
+        score={chartData.traitScores.happiness}
+        icon={SmileIcon}
+      />
+      <TraitScoreCard
+        title="Purpose"
+        description="Sense of meaningful work"
+        score={chartData.traitScores.purpose}
+        icon={TargetIcon}
+      />
+      <TraitScoreCard
+        title="Satisfaction"
+        description="Contentment with work environment"
+        score={chartData.traitScores.satisfaction}
+        icon={ThumbsUpIcon}
+      />
+      <TraitScoreCard
         title="Stress-free"
-        description="January - June 2024"
-        data={chartData}
-        config={chartConfig}
-        dataKeys={{ desktop: 'color-desktop', mobile: 'color-mobile' }}
-        middleText="Total"
-        middleValue={chartData[0].desktop + chartData[0].mobile}
-        footerDescription="How manageable people find their work stress"
+        description="Freedom from work-related stress"
+        score={chartData.traitScores.stressFree}
+        icon={StressIcon}
       />
     </section>
   );

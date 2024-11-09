@@ -2,21 +2,8 @@
 
 import React from 'react';
 import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from 'recharts';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '@/components/ui/chart';
-import { TrendingUp } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ChartConfig, ChartContainer, ChartTooltip } from '@/components/ui/chart';
 
 type ChartData = {
   [key: string]: number | string;
@@ -43,28 +30,26 @@ const RadialChart: React.FC<RadialChartProps> = ({
   config,
   dataKeys,
   endAngle = 180,
-  innerRadius = 80,
-  outerRadius = 130,
+  innerRadius = 100,
+  outerRadius = 150,
   middleText,
   middleValue,
-  footerDescription,
 }) => {
   return (
-    <Card className="flex flex-col col-span-3">
+    <Card className="flex flex-col col-span-12 md:col-span-4">
       <CardHeader className="flex flex-col items-center pb-0">
-        <CardTitle className="text-center">{title}</CardTitle>
-        <CardDescription className="text-center">{description}</CardDescription>
+        <CardTitle className="text-center text-2xl">{title}</CardTitle>
+        <CardDescription className="text-center text-base">{description}</CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col items-center justify-center pb-0">
-        <ChartContainer
-          config={config}
-          className="mx-auto aspect-square w-full max-w-[250px] max-h-[200px]">
+      <CardContent className="flex flex-col mt-3 pb-0 grow justify-end">
+        <ChartContainer config={config} className="mx-auto aspect-square w-full max-h-[160px] grow">
           <RadialBarChart
             data={data}
             endAngle={endAngle}
             innerRadius={innerRadius}
+            cy={120}
             outerRadius={outerRadius}>
-            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+            <ChartTooltip active={false} />
             <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
               <Label
                 content={({ viewBox }) => {
@@ -74,13 +59,14 @@ const RadialChart: React.FC<RadialChartProps> = ({
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) - 16}
-                          className="fill-foreground text-2xl font-bold">
+                          className="fill-foreground text-4xl font-bold"
+                          dy="-10">
                           {middleValue}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 4}
-                          className="fill-muted-foreground">
+                          className="fill-muted-foreground text-base">
                           {middleText}
                         </tspan>
                       </text>
@@ -102,11 +88,6 @@ const RadialChart: React.FC<RadialChartProps> = ({
           </RadialBarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex flex-col items-center gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none text-center">
-          {footerDescription}
-        </div>
-      </CardFooter>
     </Card>
   );
 };
