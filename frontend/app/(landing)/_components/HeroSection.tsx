@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 const HeroSection = () => {
   return (
-    <section className="h-full w-full pt-44 md:pt-44 mt-[-70px] relative flex items-center justify-center flex-col px-5 mb-10">
+    <section className="h-full w-full pt-44 md:pt-44 relative flex items-center justify-center flex-col px-5 mb-10">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#e6e6e6_1px,transparent_1px),linear-gradient(to_bottom,#e6e6e6_1px,transparent_1px)] bg-[size:4rem_4rem] -z-10" />
       <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-white via-white/70 to-transparent filter blur-lg -z-10" />
 
@@ -12,7 +12,7 @@ const HeroSection = () => {
           CultureMatch
         </h1>
       </div>
-      <div className="flex justify-center items-center relative mt-[-10px] xl:mt-[-40px]">
+      <div className="flex justify-center items-center relative mt-5 xl:mt-[-40px]">
         <Image
           src={'/ImageGoesHere.png'}
           alt="banner image"
