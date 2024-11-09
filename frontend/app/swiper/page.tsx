@@ -55,7 +55,7 @@ const to = (i: number) => ({
   delay: i * 100,
 });
 
-export const Swiper: React.FC = () => {
+const Swiper: React.FC = () => {
   const [gone] = useState(() => new Set<number>());
   const [cardPages, setCardPages] = useState<Record<number, number>>({});
   const [swipeDir, setSwipeDir] = useState<Record<number, number>>({});
