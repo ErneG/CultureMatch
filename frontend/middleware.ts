@@ -10,7 +10,17 @@ const protectedPaths: Record<string, OnboardingTypeKey[]> = {
 };
 
 // Add paths that should be accessible without a role
-const publicPaths = ['/onboarding'];
+const publicPaths = [
+  '/',
+  '/onboarding',
+  '/enterprise',
+  '/enterprise/metrics',
+  '/enterprise/positions',
+  '/enterprise/profile',
+  '/swiper',
+  '/swiper/results',
+  '/applicant',
+];
 
 export function middleware(request: NextRequest) {
   const role = request.cookies.get('user-role')?.value as OnboardingTypeKey | undefined;
@@ -41,14 +51,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
-  ],
+  matcher: ['/((?!api|_next|_vercel|monitoring|.*\\..*).*)'],
 };
