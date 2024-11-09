@@ -9,7 +9,7 @@ type RouteLink = {
 };
 
 const routes: RouteLink[] = [
-  { href: '/enterprise/summary', text: 'Summary' },
+  { href: '/enterprise/metrics', text: 'Metrics' },
   { href: '/enterprise/positions', text: 'Positions' },
   { href: '/enterprise/profile', text: 'Profile' },
 ];
