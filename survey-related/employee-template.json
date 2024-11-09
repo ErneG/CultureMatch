@@ -1,0 +1,52 @@
+{
+    "employee_questionnaire": [
+        {
+            "question": "Do you approve of the CEO of the company?"
+        },
+        {
+            "question": "Overall, I am completely satisfied with my job."
+        },
+        {
+            "question": "My work has a clear sense of purpose."
+        },
+        {
+            "question": "I feel happy at work most of the time."
+        },
+        {
+            "question": "I feel stressed at work most of the time."
+        },
+        {
+            "question": "I am paid fairly for my work."
+        },
+        {
+            "question": "There are people at work who give me support and encouragement."
+        },
+        {
+            "question": "There are people at work who appreciate me as a person."
+        },
+        {
+            "question": "I can trust people in my company."
+        },
+        {
+            "question": "I feel a sense of belonging in my company."
+        },
+        {
+            "question": "My manager helps me succeed."
+        },
+        {
+            "question": "My work environment feels inclusive and respectful of all people."
+        },
+        {
+            "question": "My work has the time and location flexibility I need."
+        },
+        {
+            "question": "In most of my work tasks, I feel energized."
+        },
+        {
+            "question": "I am achieving most of my goals at work."
+        },
+        {
+            "question": "I often learn something at work."
+        }
+    ]
+}

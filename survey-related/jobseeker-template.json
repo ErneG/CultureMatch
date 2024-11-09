@@ -1,0 +1,52 @@
+{
+    "jobseeker_questionnaire": [
+        {
+            "question": "I feel confident in the leadership of companies I am interested in."
+        },
+        {
+            "question": "Overall, I am satisfied with my job search process."
+        },
+        {
+            "question": "I am looking for a role that aligns with my career goals and values."
+        },
+        {
+            "question": "I feel optimistic about finding the right job opportunity most of the time."
+        },
+        {
+            "question": "I feel stressed about the job search process most of the time."
+        },
+        {
+            "question": "Fair compensation is important to me in a new role."
+        },
+        {
+            "question": "I value support and encouragement from a company’s recruitment team."
+        },
+        {
+            "question": "I want to feel valued as an individual during the recruitment process."
+        },
+        {
+            "question": "Trustworthy communication from a potential employer is important to me."
+        },
+        {
+            "question": "I want to feel a sense of belonging in my future workplace."
+        },
+        {
+            "question": "Having a manager who helps me grow is important to me."
+        },
+        {
+            "question": "I want to work in an environment that is inclusive and respectful of all people."
+        },
+        {
+            "question": "Flexibility in work hours and location is a priority for me."
+        },
+        {
+            "question": "I seek work that makes me feel energized and motivated."
+        },
+        {
+            "question": "Achieving my professional goals is important to me."
+        },
+        {
+            "question": "I am looking for opportunities to learn and grow in my future role."
+        }
+    ]
+}
