@@ -66,11 +66,11 @@ const Navigation = () => {
       className={`fixed top-0 right-0 left-0 p-4 flex items-center justify-between z-10 transition-all duration-300 ${
         isScrolled ? 'bg-white bg-opacity-70 backdrop-blur-md shadow-md' : 'bg-transparent'
       }`}>
-      <aside
-        className="flex items-center gap-2 cursor-pointer"
+      <button
+        className="flex items-center gap-2 cursor-pointer bg-transparent border-none p-0"
         onClick={() => handleScrollToTop(0.5)}>
         <span className="text-xl font-bold">CultureMatch</span>
-      </aside>
+      </button>
       <nav className="hidden md:block absolute left-[50%] top-[50%] transform translate-x-[-50%] translate-y-[-50%]">
         <ul className="flex items-center justify-center gap-8">
           <li>
