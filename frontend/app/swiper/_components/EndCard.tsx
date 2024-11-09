@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useAcceptedJobs } from '@/components/providers/AcceptedJobsContext';
 
 interface EndCardProps {
   onRestart: () => void;
@@ -8,6 +9,8 @@ interface EndCardProps {
 }
 
 export const EndCard: React.FC<EndCardProps> = ({ onRestart, onNextPage }) => {
+  const { acceptedJobs } = useAcceptedJobs();
+
   return (
     <Card className="w-full h-full p-8 flex flex-col items-center justify-center text-center">
       <h2 className="text-3xl font-bold mb-4">You&apos;ve reached the end!</h2>
@@ -16,9 +19,11 @@ export const EndCard: React.FC<EndCardProps> = ({ onRestart, onNextPage }) => {
         <Button onClick={onRestart} className="w-full">
           Restart
         </Button>
-        <Button variant="outline" onClick={onNextPage} className="w-full">
-          Next Page
-        </Button>
+        {acceptedJobs.length > 0 && (
+          <Button variant="outline" onClick={onNextPage} className="w-full">
+            View Results
+          </Button>
+        )}
       </div>
     </Card>
   );

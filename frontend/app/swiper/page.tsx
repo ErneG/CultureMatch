@@ -1,16 +1,17 @@
-// Swiper.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import { useSprings } from '@react-spring/web';
 import { useDrag } from '@use-gesture/react';
 import Confetti from 'react-confetti';
+import { useRouter } from 'next/navigation'; // For navigation
 
 import { X, Check } from 'lucide-react';
 import { SwipeCard } from './_components/SwipeCard';
 import { Job } from '@/types/job';
 import { EndCard } from './_components/EndCard';
 import { SwipeWayIndicator } from './_components/SwipeWayIndecator';
+import { useAcceptedJobs } from '@/components/providers/AcceptedJobsContext';
 
 // Mock data for job listings
 const jobs: Job[] = [
@@ -66,8 +67,16 @@ export const Swiper: React.FC = () => {
   const [showEndCard, setShowEndCard] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [isFadingOut, setIsFadingOut] = useState(false); // for fade-out effect
+  const { addAcceptedJob, clearAcceptedJobs } = useAcceptedJobs();
+  const router = useRouter(); // For navigation
 
   // Handle window resize and initial size
+
+  useEffect(() => {
+    clearAcceptedJobs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     const updateWidth = () => setWindowWidth(window.innerWidth);
     updateWidth();
@@ -76,7 +85,10 @@ export const Swiper: React.FC = () => {
   }, []);
 
   const onSwipeRight = (jobId: number) => {
-    console.log('Swiped right on job:', jobId);
+    const acceptedJob = jobs.find((job) => job.id === jobId);
+    if (acceptedJob) {
+      addAcceptedJob(acceptedJob);
+    }
   };
 
   const onSwipeLeft = (jobId: number) => {
@@ -164,6 +176,7 @@ export const Swiper: React.FC = () => {
     },
   );
 
+  // Handler to restart the swiper
   const handleRestart = () => {
     gone.clear();
     setShowEndCard(false);
@@ -171,17 +184,20 @@ export const Swiper: React.FC = () => {
     setIsFadingOut(false);
     setSwipeDir({});
     setCardPages({});
+
     api.start((i) => to(i));
   };
 
+  // Handler to proceed to the next page
   const handleNextPage = () => {
-    console.log('Navigating to the next page...');
+    router.push('/swiper/results');
   };
 
+  // Don't render until we have window width
   if (!windowWidth) return null;
 
   return (
-    <div className="flex items-start justify-center w-screen h-[100svh] bg-[#f5f5f5] overflow-hidden gap-4">
+    <div className="flex items-start justify-center w-screen h-[100vh] bg-[#f5f5f5] overflow-hidden gap-4">
       {/* Confetti Effect */}
       {showConfetti && (
         <Confetti
@@ -215,6 +231,7 @@ export const Swiper: React.FC = () => {
         </div>
       </div>
 
+      {/* Conditionally render bottom indicator */}
       {!showEndCard && (
         <div className="absolute bottom-3 left-0 right-0 text-center">
           <div className="bg-background/80 backdrop-blur-sm mx-auto px-6 py-3 rounded-full inline-flex gap-6">
