@@ -8,11 +8,11 @@ const HeroSection = () => {
 
       <p className="text-center">Find a work enviroment that fits you well</p>
       <div className=" relative">
-        <h1 className="text-5xl font-bold text-center md:text-[90px] lg:text-[130px] xl:text-[200px] ">
+        <h1 className="text-6xl font-bold text-center md:text-[90px] lg:text-[130px] xl:text-[200px] ">
           CultureMatch
         </h1>
       </div>
-      <div className="flex justify-center items-center relative mt-5 xl:mt-[-40px]">
+      <div className="flex justify-center items-center relative mt-[-10px] md:lg:mt-[-20px] lg:mt-[-30px] xl:mt-[-40px]">
         <Image
           src={'/ImageGoesHere.png'}
           alt="banner image"

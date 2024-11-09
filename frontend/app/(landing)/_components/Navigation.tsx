@@ -84,12 +84,12 @@ const Navigation = () => {
             </a>
           </li>
           <li>
-            <Link href={'#'}>Login</Link>
+            <Link href={'/onboarding'}>Try Now!</Link>
           </li>
         </ul>
       </nav>
       <nav className="md:hidden">
-        <Link href={'#'}>Login</Link>
+        <Link href={'/onboarding'}>Try Now!</Link>
       </nav>
     </div>
   );

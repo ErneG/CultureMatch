@@ -2,6 +2,9 @@ services:
   frontend:
     build:
       context: ./frontend
+      args:
+        - NODE_ENV=production
+        - DATABASE_URL=${DATABASE_URL}
     ports:
       - "59991:3000"
     container_name: frontend-b8koc4oc4ggc400skgg4o44s-201843285515
