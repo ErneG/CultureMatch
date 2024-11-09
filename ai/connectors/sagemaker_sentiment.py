@@ -1,6 +1,7 @@
 import os
 import json
 import boto3
+from typing import Tuple
 
 
 class SageMakerSentiment:
@@ -10,7 +11,7 @@ class SageMakerSentiment:
         self.unbold = "\033[0m"
         self.sentiment_endpoint = os.environ["SGM_SENTIMENT_ENDPOINT"]
 
-    def sentiment_analysis_single(self, input_text: str) -> str:
+    def sentiment_analysis_single(self, input_text: str) -> Tuple[str, float]:
         """
         Analyze the sentiment of a single input text and return the result as a string.
 
@@ -19,12 +20,12 @@ class SageMakerSentiment:
 
         Returns:
             (str, number): A tuple of string representing the sentiment of the input text ("POSITIVE", "NEGATIVE") and a numeric score from 0 to 1.
-            
+
         Example:
             result = self.sentiment_analysis_single("I love this product!")
             print(result)
         """
-        
+
         # Query SageMaker endpoint running distilbert-base-cased
         def query_endpoint(encoded_text):
             client = boto3.client("runtime.sagemaker")
