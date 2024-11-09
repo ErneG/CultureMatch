@@ -82,7 +82,7 @@ export default function Component() {
               onSelect={setSelected}
             />
           </div>
-=
+          =
         </CardContent>
         <div className="p-4 md:p-6 flex justify-center">
           <Button

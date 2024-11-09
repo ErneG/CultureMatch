@@ -1,4 +1,3 @@
-
 const ApplicantPage = () => {
   return <div>ApplicantPage</div>;
 };

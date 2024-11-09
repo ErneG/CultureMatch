@@ -2,16 +2,33 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ENTERPRISE_COMPANY_NAME } from '@/config/constants';
 import { Separator } from '@/components/ui/separator';
-import { Calendar, MapPin, Building2, Clock, Banknote, Users, ArrowLeftIcon } from 'lucide-react';
+import {
+  Calendar,
+  MapPin,
+  Building2,
+  Clock,
+  Banknote,
+  Users,
+  ArrowLeftIcon,
+  PencilIcon,
+} from 'lucide-react';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { JobListing } from '@/types/entities';
+import { Button } from '@/components/ui/button';
 
 interface JobDetailsProps {
   job: JobListing | null;
   handleBackToList: () => void;
 }
+
+const salaryType = {
+  1: 'Yearly',
+  2: 'Monthly',
+  3: 'Weekly',
+  4: 'Hourly',
+};
 
 export const JobDetails: React.FC<JobDetailsProps> = ({ job, handleBackToList }) => {
   if (!job) return null;
@@ -21,23 +38,30 @@ export const JobDetails: React.FC<JobDetailsProps> = ({ job, handleBackToList })
       <div className="space-y-6 lg:p-6">
         {/* Header Section */}
         <div className="space-y-4">
-          <div className="flex items-start gap-2">
-            <div className="w-fit h-fit">
-              <ArrowLeftIcon
-                className="w-[1.5rem] h-[1.5rem] cursor-pointer text-neutral-800 hover:text-neutral-600 md:hidden"
-                onClick={handleBackToList}
-              />
-            </div>
-            <div className="space-y-1">
-              <h2 className="text-2xl font-bold tracking-tight">{job.title}</h2>
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Building2 className="h-4 w-4" />
-                <span>{ENTERPRISE_COMPANY_NAME}</span>
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex items-start gap-2">
+              <div className="w-fit h-fit">
+                <ArrowLeftIcon
+                  className="w-[1.5rem] h-[1.5rem] cursor-pointer text-neutral-800 hover:text-neutral-600 md:hidden"
+                  onClick={handleBackToList}
+                />
               </div>
+              <div className="space-y-1">
+                <h2 className="text-2xl font-bold tracking-tight">{job.title}</h2>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Building2 className="h-4 w-4" />
+                  <span>{ENTERPRISE_COMPANY_NAME}</span>
+                </div>
+              </div>
+              <Badge variant="default" className="text-sm">
+                Open
+              </Badge>
             </div>
-            <Badge variant="default" className="text-sm">
-              Open
-            </Badge>
+
+            <Button variant="outline" size="sm" className="flex items-center gap-2" disabled>
+              <PencilIcon className="h-4 w-4" />
+              Edit Position
+            </Button>
           </div>
 
           <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
@@ -78,7 +102,9 @@ export const JobDetails: React.FC<JobDetailsProps> = ({ job, handleBackToList })
                     <p className="text-2xl font-bold">
                       ${job.salaryMin.toLocaleString()} - ${job.salaryMax.toLocaleString()}
                     </p>
-                    <p className="text-sm text-muted-foreground">{job.salaryType}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {salaryType[job.salaryType as keyof typeof salaryType] || salaryType[1]}
+                    </p>
                   </div>
                 )}
               </div>
