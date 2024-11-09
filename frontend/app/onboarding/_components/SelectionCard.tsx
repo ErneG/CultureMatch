@@ -48,6 +48,7 @@ export function SelectionCard({
               <p key={index} className="flex flex-row gap-1 items-center">
                 <feature.icon className="inline shrink-0 mr-0.5 w-4 h-4" />
                 <span className="break-words">{feature.text}</span>
+
               </p>
             ))}
           </div>
