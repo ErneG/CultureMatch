@@ -6,6 +6,10 @@ services:
         - NODE_ENV=production
         - DATABASE_URL=${DATABASE_URL}
     ports:
+
+
       - "3000:3000"
+
+
     restart: unless-stopped
     
