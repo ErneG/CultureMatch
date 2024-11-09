@@ -34,3 +34,4 @@ networks:
     #   - traefik.http.services.https-0-b8koc4oc4ggc400skgg4o44s-frontend.loadbalancer.server.port=3000
     # networks:
     #   b8koc4oc4ggc400skgg4o44s: null
+    

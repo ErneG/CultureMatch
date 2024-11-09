@@ -1,0 +1,64 @@
+{
+    "employee_questionnaire": [
+        {
+            "question": "Overall, I am completely satisfied with my job.",
+            "description": "Describe what contributes most to your job satisfaction. What aspects do you enjoy, and what, if anything, would make your experience even better?"
+        },
+        {
+            "question": "My work has a clear sense of purpose.",
+            "description": "Please explain how your work aligns with your personal and professional goals. Do you feel motivated by the purpose of your tasks?"
+        },
+        {
+            "question": "I feel happy at work most of the time.",
+            "description": "Please share the key elements that make you feel happy at work. Are there specific moments or aspects that bring you the most joy?"
+        },
+        {
+            "question": "I feel stressed at work most of the time.",
+            "description": "Describe any specific sources of stress you experience at work. Are there ways you think the company could support you in managing this stress?"
+        },
+        {
+            "question": "I am paid fairly for my work.",
+            "description": "Please share your perspective on compensation. Do you feel that it reflects your responsibilities and contributions?"
+        },
+        {
+            "question": "There are people at work who give me support and encouragement.",
+            "description": "Explain your experience with receiving support from colleagues or leaders. Are there any improvements you'd like to see in this area?"
+        },
+        {
+            "question": "There are people at work who appreciate me as a person.",
+            "description": "Please describe how you feel valued on a personal level at work. Are there moments when you feel genuinely appreciated by those around you?"
+        },
+        {
+            "question": "I can trust people in my company.",
+            "description": "Describe your level of trust in your colleagues and leaders. Are there any experiences that have shaped your trust positively or negatively?"
+        },
+        {
+            "question": "I feel a sense of belonging in my company.",
+            "description": "Please share what makes you feel connected to the company. Are there specific aspects of the workplace culture that help you feel part of the team?"
+        },
+        {
+            "question": "My manager helps me succeed.",
+            "description": "Explain how your manager supports your professional growth. Are there additional ways they could assist in your success?"
+        },
+        {
+            "question": "My work environment feels inclusive and respectful of all people.",
+            "description": "Describe your experience with inclusivity and respect at work. Are there any areas where you feel the company could improve in promoting inclusivity?"
+        },
+        {
+            "question": "My work has the time and location flexibility I need.",
+            "description": "Please share your experience with work flexibility. Does it support your work-life balance, or is there more the company could do?"
+        },
+        {
+            "question": "In most of my work tasks, I feel energized.",
+            "description": "Explain what aspects of your work make you feel energized and motivated. Are there any tasks that you find draining, and why?"
+        },
+        {
+            "question": "I am achieving most of my goals at work.",
+            "description": "Describe your progress toward your work goals. Are there any challenges that have made it difficult to meet them?"
+        },
+        {
+            "question": "I often learn something at work.",
+            "description": "Share how your work contributes to your learning and development. Are there areas where you'd like to learn more or gain new skills?"
+        }
+    ]
+}
