@@ -50,12 +50,14 @@ export default function SurveyContent({
       if (parsedData.profession) setSavedProfession(parsedData.profession);
       if (parsedData.results) setAnswers(parsedData.results);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Save progress to localStorage
   useEffect(() => {
     const dataToSave = { profession: savedProfession, results: answers };
     localStorage.setItem(storageName, JSON.stringify(dataToSave));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [answers, savedProfession]);
 
   const handleValueChange = (questionIndex: number, value: number) => {

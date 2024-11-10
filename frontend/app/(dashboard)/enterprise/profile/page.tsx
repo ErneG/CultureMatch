@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Entity } from '@/types/entities';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -18,7 +18,6 @@ import {
   Heart,
   Monitor,
   Brain,
-  Stethoscope,
   PiggyBank,
   Flower2,
   Database,
@@ -79,6 +78,7 @@ const ProfilePage = () => {
       // If no data is found, redirect to SetupCompanyPage
       router.push('/survey/company');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!companyData) {
