@@ -13,37 +13,37 @@ def get_users():
     return jsonify({"hello": "world"})
 
 
-@bp.route("/company", methods=["GET"])
-def get_companies():
-    """
-    TODO: TEST ENDPOINT- REMOVE!
-    """
-    companies = models.Entity.query.all()
-    return jsonify({"companies": [company.to_dict() for company in companies]})
+# @bp.route("/company", methods=["GET"])
+# def get_companies():
+#     """
+#     TODO: TEST ENDPOINT- REMOVE!
+#     """
+#     companies = models.Entity.query.all()
+#     return jsonify({"companies": [company.to_dict() for company in companies]})
 
 
-@bp.route("/surveys", methods=["GET"])
-def get_surveys():
-    """
-    TODO: TEST ENDPOINT- REMOVE!
-    """
-    surveys = models.Survey.query.all()
-    return jsonify({"surveys": [survey.to_dict() for survey in surveys]})
+# @bp.route("/surveys", methods=["GET"])
+# def get_surveys():
+#     """
+#     TODO: TEST ENDPOINT- REMOVE!
+#     """
+#     surveys = models.Survey.query.all()
+#     return jsonify({"surveys": [survey.to_dict() for survey in surveys]})
 
 
-@bp.route("/survey_responses", methods=["GET"])
-def get_survey_responses():
-    """
-    TODO: TEST ENDPOINT- REMOVE!
-    """
-    survey_responses = models.SurveyResponse.query.all()
-    return jsonify(
-        {
-            "survey_responses": [
-                survey_response.to_dict() for survey_response in survey_responses
-            ]
-        }
-    )
+# @bp.route("/survey_responses", methods=["GET"])
+# def get_survey_responses():
+#     """
+#     TODO: TEST ENDPOINT- REMOVE!
+#     """
+#     survey_responses = models.SurveyResponse.query.all()
+#     return jsonify(
+#         {
+#             "survey_responses": [
+#                 survey_response.to_dict() for survey_response in survey_responses
+#             ]
+#         }
+#     )
 
 
 @bp.route("/survey_response_items", methods=["GET"])
@@ -74,23 +74,23 @@ def get_survey_response_items_route():
 survey_analysis = SurveyAnalysisService()
 
 
-@bp.route("/category_survets", methods=["GET"])
-def get_category_surveys():
-    category_name = request.args.get("category", type=str)
+# @bp.route("/category_survets", methods=["GET"])
+# def get_category_surveys():
+#     category_name = request.args.get("category", type=str)
 
-    category_surveys = survey_analysis.get_category_survey_response_items(
-        category=category_name
-    )
-    return jsonify(
-        {
-            # "survey_responses": [
-            #     survey_response.to_dict() for survey_response in category_surveys
-            # ]
-            "survey_responses": [
-                survey_response for survey_response in category_surveys
-            ]
-        }
-    )
+#     category_surveys = survey_analysis.get_category_survey_response_items(
+#         category=category_name
+#     )
+#     return jsonify(
+#         {
+#             # "survey_responses": [
+#             #     survey_response.to_dict() for survey_response in category_surveys
+#             # ]
+#             "survey_responses": [
+#                 survey_response for survey_response in category_surveys
+#             ]
+#         }
+#     )
 
 
 @bp.route("/analysed_survey_responses", methods=["GET"])
@@ -117,3 +117,49 @@ def get_analysed_entity_trait():
 def post_init_analysis():
     survey_analysis.analyse_survey_question_feedback()
     return jsonify({"result": "analysis OK"})
+
+
+@bp.route("/create_metrics", methods=["POST"])
+def post_create_company_metrics():
+    survey_analysis.prepare_category_analysis_company()
+    return jsonify({"result": "analysis OK"})
+
+
+# Frontend communication
+
+# Set up analysis categories
+keywords = [
+    "happiness",
+    "belonging",
+    "purpose",
+    "inclusion",
+    "learning",
+    "support",
+    "flexibility",
+    "satisfaction",
+    "achievement",
+    "appreciation",
+    "management",
+    "pressure",
+    "energy",
+    "trust",
+    "compensation",
+]
+
+
+@bp.route("/company_metrics", methods=["GET"])
+def get_company_metrics():
+    entity_traits = models.EntityTrait.query.all()
+    entity_scores = [et.to_dict()["value"] for et in entity_traits]
+
+    result = dict(zip(keywords, entity_scores))
+    return jsonify(result)
+
+
+# @bp.route("/recommend_jobs", methods=["GET"])
+# def get_jobseeker_recommended_jobs():
+#     pass
+
+#     return jsonify(
+#         {"analysed_entity": [entity_trait.to_dict() for entity_trait in entity_traits]}
+#     )
