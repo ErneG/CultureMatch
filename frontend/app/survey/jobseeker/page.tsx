@@ -81,12 +81,24 @@ export default function JobseekerSurvey() {
                 <ArrowLeft className="w-4 h-4" />
                 Back to Instructions
               </Button>
-              <Button
-                onClick={() => setCurrentStep('questions')}
-                disabled={!canProceedToQuestions}
-                className="flex items-center gap-2">
-                Next <ArrowRight className="w-4 h-4" />
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  disabled={!canProceedToQuestions}
+                  onClick={() => {
+                    router.push('/swiper?type=skip');
+                  }}
+                  className="flex items-center gap-2">
+                  DEMO: Skip form
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+                <Button
+                  onClick={() => setCurrentStep('questions')}
+                  disabled={!canProceedToQuestions}
+                  className="flex items-center gap-2">
+                  Next <ArrowRight className="w-4 h-4" />
+                </Button>
+              </div>
             </div>
           </div>
         );
