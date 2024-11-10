@@ -106,6 +106,8 @@ export default function JobseekerSurvey() {
       case 'questions':
         return (
           <SurveyContent
+            profession={profession}
+            storageName="jobseeker_survey"
             questions={jobseeker_questionnaire.jobseeker_questionnaire}
             title="Career Preferences Survey"
             onBack={() => setCurrentStep('details')}

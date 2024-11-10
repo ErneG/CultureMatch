@@ -112,6 +112,7 @@ export default function EmployeeSurvey() {
       case 'questions':
         return (
           <SurveyContent
+            storageName="employee_survey"
             questions={employee_questionnaire.employee_questionnaire}
             title="Employee Satisfaction Survey"
             onBack={() => setCurrentStep('details')}

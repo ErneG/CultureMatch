@@ -1,4 +1,6 @@
 'use client';
+
+import { useEffect, useState } from 'react';
 import { Entity } from '@/types/entities';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -8,78 +10,76 @@ import {
   Globe,
   Mail,
   Phone,
-  Building2,
   MapPin,
-  Database,
-  Flower2,
-  PiggyBank,
-  Stethoscope,
-  Brain,
-  Monitor,
-  Heart,
+  BadgeCheck,
   Activity,
+  Building2,
   Users,
+  Heart,
+  Monitor,
+  Brain,
+  Stethoscope,
+  PiggyBank,
+  Flower2,
+  Database,
 } from 'lucide-react';
-import { ENTERPRISE_COMPANY_NAME } from '@/config/constants';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Pencil } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
-// Keep your existing data structures
-const entity: Entity = {
-  id: 1,
-  name: ENTERPRISE_COMPANY_NAME,
-  type: 0,
-  email: 'contact@healthnet-solutions.com',
-  phone: '+1 (888) 555-0123',
-  country: 'USA',
-  registrationNumber: 'HC789456123',
-  isActive: true,
-};
-// TODO: transfer to entities
-interface EntityProfile {
-  entityId: number;
-  tagline: string;
-  description: string;
-  website: string;
-  size: string;
-  foundingDate: Date;
-  location: string;
-  industry: number;
-  specialties: string[];
-  logoUrl: string;
-  // socialMediaLinks: string;
+interface Specialty {
+  name: string;
+  icon: string;
 }
-const entityProfile: EntityProfile = {
-  entityId: entity.id,
-  tagline:
-    'Transforming healthcare delivery through integrated care networks and innovative health plans.',
-  description: `HealthNet Solutions is a leading integrated healthcare provider specializing in connecting patients with quality care through our extensive network of private practices. We combine traditional healthcare delivery with modern technology and innovative payment solutions to make healthcare more accessible and affordable.
 
-Our network includes over 2,000 healthcare providers across multiple specialties, serving both individual patients and corporate clients. We pride ourselves on our ability to offer comprehensive healthcare solutions, from primary care to specialized treatments, while maintaining high standards of patient care and satisfaction.
+interface CompanyData {
+  name: string;
+  email?: string | null;
+  phone?: string | null;
+  country?: string | null;
+  registrationNumber?: string | null;
+  isActive?: boolean;
+  tagline?: string | null;
+  description?: string | null;
+  website?: string | null;
+  size?: string | null;
+  foundingDate?: Date | null;
+  location?: string | null;
+  industry?: string | null;
+  specialties?: Specialty[];
+  logoUrl?: string | null;
+}
 
-Through our innovative health plans, we work directly with employers to create customized healthcare solutions that meet their employees' needs while managing costs effectively. Our individual plans provide flexible options for families and individuals seeking quality healthcare coverage.`,
-  website: 'https://www.healthnet-solutions.com',
-  size: '1000-5000 employees',
-  foundingDate: new Date('2010-01-01'),
-  location: 'Helsinki, Finland',
-  industry: 1,
-  specialties: [
-    'Integrated Healthcare Network Management',
-    'Corporate Health Plan Solutions',
-    'Individual & Family Health Coverage',
-    'Preventive Care Programs',
-    'Telemedicine Services',
-    'Mental Health Services',
-    'Specialty Care Coordination',
-    'Healthcare Cost Management',
-    'Wellness Program Implementation',
-    'Electronic Health Records Integration',
-  ],
-  logoUrl: 'https://picsum.photos/200/300',
+const iconMap: { [key: string]: React.ReactNode } = {
+  network: <Activity className="w-5 h-5 text-primary mt-1" />,
+  corporate: <Building2 className="w-5 h-5 text-primary mt-1" />,
+  family: <Users className="w-5 h-5 text-primary mt-1" />,
+  // Add more mappings as needed
 };
 
 const ProfilePage = () => {
+  const [companyData, setCompanyData] = useState<CompanyData | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('companyData');
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      // Parse the foundingDate back to a Date object
+      if (parsedData.foundingDate) {
+        parsedData.foundingDate = new Date(parsedData.foundingDate);
+      }
+      setCompanyData(parsedData);
+    } else {
+      // If no data is found, redirect to SetupCompanyPage
+      router.push('/survey/company');
+    }
+  }, []);
+
+  if (!companyData) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 lg:px-8 lg:py-12 space-y-8">
@@ -95,44 +95,57 @@ const ProfilePage = () => {
             <CardContent className="pt-6">
               <div className="flex flex-col md:flex-row gap-6">
                 <Avatar className="w-32 h-32">
-                  <AvatarImage src={entityProfile.logoUrl} alt="Company logo" />
-                  <AvatarFallback>{entity.name[0]}</AvatarFallback>
+                  {companyData.logoUrl ? (
+                    <AvatarImage src={companyData.logoUrl} alt="Company logo" />
+                  ) : (
+                    <AvatarFallback>{companyData.name?.[0] || 'C'}</AvatarFallback>
+                  )}
                 </Avatar>
 
                 <div className="space-y-4 flex-1">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div>
                       <div className="flex items-center gap-2">
-                        <h2 className="text-2xl font-bold">{entity.name}</h2>
-                        <Badge variant="secondary">Active</Badge>
+                        <h2 className="text-2xl font-bold">{companyData.name}</h2>
+                        {companyData.isActive && <Badge variant="secondary">Active</Badge>}
                       </div>
-                      <p className="text-muted-foreground">{entityProfile.tagline}</p>
+                      <p className="text-muted-foreground">{companyData.tagline}</p>
                     </div>
-                    <Button className="w-fit" variant="outline" disabled>
-                      <Pencil className="mr-2 h-4 w-4" />
+                    <Button
+                      className="w-fit"
+                      variant="outline"
+                      onClick={() => router.push('/survey/company')}>
                       Edit Profile
                     </Button>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="flex items-center gap-2">
-                      <Mail className="w-4 h-4 text-muted-foreground" />
-                      <span>{entity.email}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Phone className="w-4 h-4 text-muted-foreground" />
-                      <span>{entity.phone}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Globe className="w-4 h-4 text-muted-foreground" />
-                      <a href={entityProfile.website} className="text-primary hover:underline">
-                        {entityProfile.website}
-                      </a>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-muted-foreground" />
-                      <span>{entityProfile.location}</span>
-                    </div>
+                    {companyData.email && (
+                      <div className="flex items-center gap-2">
+                        <Mail className="w-4 h-4 text-muted-foreground" />
+                        <span>{companyData.email}</span>
+                      </div>
+                    )}
+                    {companyData.phone && (
+                      <div className="flex items-center gap-2">
+                        <Phone className="w-4 h-4 text-muted-foreground" />
+                        <span>{companyData.phone}</span>
+                      </div>
+                    )}
+                    {companyData.website && (
+                      <div className="flex items-center gap-2">
+                        <Globe className="w-4 h-4 text-muted-foreground" />
+                        <a href={companyData.website} className="text-primary hover:underline">
+                          {companyData.website}
+                        </a>
+                      </div>
+                    )}
+                    {companyData.location && (
+                      <div className="flex items-center gap-2">
+                        <MapPin className="w-4 h-4 text-muted-foreground" />
+                        <span>{companyData.location}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -152,28 +165,36 @@ const ProfilePage = () => {
                   <h3 className="text-lg font-semibold">Company Information</h3>
                 </CardHeader>
                 <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-1">
-                    <p className="text-sm text-muted-foreground">Company Size</p>
-                    <div className="flex items-center gap-2">
-                      <Building2 className="w-4 h-4 text-muted-foreground" />
-                      <span>{entityProfile.size}</span>
+                  {companyData.size && (
+                    <div className="space-y-1">
+                      <p className="text-sm text-muted-foreground">Company Size</p>
+                      <div className="flex items-center gap-2">
+                        <Building2 className="w-4 h-4 text-muted-foreground" />
+                        <span>{companyData.size}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-sm text-muted-foreground">Founded</p>
-                    <div className="flex items-center gap-2">
-                      <CalendarDays className="w-4 h-4 text-muted-foreground" />
-                      <span>{entityProfile.foundingDate.getFullYear()}</span>
+                  )}
+                  {companyData.foundingDate && (
+                    <div className="space-y-1">
+                      <p className="text-sm text-muted-foreground">Founded</p>
+                      <div className="flex items-center gap-2">
+                        <CalendarDays className="w-4 h-4 text-muted-foreground" />
+                        <span>{companyData.foundingDate.getFullYear()}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-sm text-muted-foreground">Registration Number</p>
-                    <span>{entity.registrationNumber}</span>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-sm text-muted-foreground">Country</p>
-                    <span>{entity.country}</span>
-                  </div>
+                  )}
+                  {companyData.registrationNumber && (
+                    <div className="space-y-1">
+                      <p className="text-sm text-muted-foreground">Registration Number</p>
+                      <span>{companyData.registrationNumber}</span>
+                    </div>
+                  )}
+                  {companyData.country && (
+                    <div className="space-y-1">
+                      <p className="text-sm text-muted-foreground">Country</p>
+                      <span>{companyData.country}</span>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -184,101 +205,31 @@ const ProfilePage = () => {
                   <h3 className="text-lg font-semibold">Additional Information</h3>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <p className="text-sm text-muted-foreground">About Us</p>
-                      <p className="leading-relaxed">{entityProfile.description}</p>
+                  {companyData.description && (
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <p className="text-sm text-muted-foreground">About Us</p>
+                        <p className="leading-relaxed">{companyData.description}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="space-y-4">
-                    <p className="text-sm text-muted-foreground">Our Specialties</p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <Card className="p-4 flex items-start space-x-4">
-                        <Activity className="w-5 h-5 text-primary mt-1" />
-                        <div>
-                          <h4 className="font-medium">Network Management</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Integrated Healthcare Network Management
-                          </p>
-                        </div>
-                      </Card>
-                      <Card className="p-4 flex items-start space-x-4">
-                        <Building2 className="w-5 h-5 text-primary mt-1" />
-                        <div>
-                          <h4 className="font-medium">Corporate Solutions</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Corporate Health Plan Solutions
-                          </p>
-                        </div>
-                      </Card>
-                      <Card className="p-4 flex items-start space-x-4">
-                        <Users className="w-5 h-5 text-primary mt-1" />
-                        <div>
-                          <h4 className="font-medium">Family Coverage</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Individual & Family Health Coverage
-                          </p>
-                        </div>
-                      </Card>
-                      <Card className="p-4 flex items-start space-x-4">
-                        <Heart className="w-5 h-5 text-primary mt-1" />
-                        <div>
-                          <h4 className="font-medium">Preventive Care</h4>
-                          <p className="text-sm text-muted-foreground">Preventive Care Programs</p>
-                        </div>
-                      </Card>
-                      <Card className="p-4 flex items-start space-x-4">
-                        <Monitor className="w-5 h-5 text-primary mt-1" />
-                        <div>
-                          <h4 className="font-medium">Telemedicine</h4>
-                          <p className="text-sm text-muted-foreground">Telemedicine Services</p>
-                        </div>
-                      </Card>
-                      <Card className="p-4 flex items-start space-x-4">
-                        <Brain className="w-5 h-5 text-primary mt-1" />
-                        <div>
-                          <h4 className="font-medium">Mental Health</h4>
-                          <p className="text-sm text-muted-foreground">Mental Health Services</p>
-                        </div>
-                      </Card>
-                      <Card className="p-4 flex items-start space-x-4">
-                        <Stethoscope className="w-5 h-5 text-primary mt-1" />
-                        <div>
-                          <h4 className="font-medium">Specialty Care</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Specialty Care Coordination
-                          </p>
-                        </div>
-                      </Card>
-                      <Card className="p-4 flex items-start space-x-4">
-                        <PiggyBank className="w-5 h-5 text-primary mt-1" />
-                        <div>
-                          <h4 className="font-medium">Cost Management</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Healthcare Cost Management
-                          </p>
-                        </div>
-                      </Card>
-                      <Card className="p-4 flex items-start space-x-4">
-                        <Flower2 className="w-5 h-5 text-primary mt-1" />
-                        <div>
-                          <h4 className="font-medium">Wellness Programs</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Wellness Program Implementation
-                          </p>
-                        </div>
-                      </Card>
-                      <Card className="p-4 flex items-start space-x-4">
-                        <Database className="w-5 h-5 text-primary mt-1" />
-                        <div>
-                          <h4 className="font-medium">EHR Integration</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Electronic Health Records Integration
-                          </p>
-                        </div>
-                      </Card>
+                  )}
+                  {companyData.specialties && companyData.specialties.length > 0 && (
+                    <div className="space-y-4">
+                      <p className="text-sm text-muted-foreground">Our Specialties</p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {companyData.specialties.map((specialty, index) => (
+                          <Card key={index} className="p-4 flex items-start space-x-4">
+                            {iconMap[specialty.icon] || (
+                              <BadgeCheck className="w-5 h-5 text-primary mt-1" />
+                            )}
+                            <div>
+                              <h4 className="font-medium">{specialty.name}</h4>
+                            </div>
+                          </Card>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
