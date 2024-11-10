@@ -11,7 +11,7 @@ interface SurveyDisclaimerProps {
 
 export function SurveyDisclaimer({ title, subtitle, onStart }: SurveyDisclaimerProps) {
   return (
-    <div className="container mx-auto py-8 px-3 md:px-4 max-w-3xl space-y-8">
+    <div className="container mx-auto pt-10 pb-8 px-3 md:px-4 max-w-3xl space-y-8">
       <div className="space-y-2 p-2 md:p-0">
         <h1 className="text-4xl font-bold">{title}</h1>
         <p className="text-muted-foreground text-lg">{subtitle}</p>
