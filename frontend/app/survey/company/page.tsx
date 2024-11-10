@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { z } from 'zod';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -32,7 +32,10 @@ const specialtyIcons = [
   { label: 'Network Management', value: 'network', icon: Icons.Network },
   { label: 'Corporate Solutions', value: 'corporate', icon: Icons.Corporate },
   { label: 'Family Coverage', value: 'family', icon: Icons.Family },
-  // Add more specialties as needed
+  { label: 'Healthcare', value: 'health', icon: Icons.Health },
+  { label: 'Technology', value: 'tech', icon: Icons.Network },
+  { label: 'Science', value: 'science', icon: Icons.Science },
+  { label: 'Finance', value: 'finance', icon: Icons.Finance },
 ];
 
 const companySchema = z.object({
@@ -64,7 +67,6 @@ type CompanyFormValues = z.infer<typeof companySchema>;
 
 export default function SetupCompanyPage() {
   const router = useRouter();
-  const [savedCompanyData, setSavedCompanyData] = useState<CompanyFormValues | null>(null);
 
   const form = useForm<CompanyFormValues>({
     resolver: zodResolver(companySchema),
@@ -96,9 +98,10 @@ export default function SetupCompanyPage() {
     const storedData = localStorage.getItem('companyData');
     if (storedData) {
       const parsedData = JSON.parse(storedData);
-      setSavedCompanyData(parsedData);
+
       form.reset(parsedData);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = (data: CompanyFormValues) => {
