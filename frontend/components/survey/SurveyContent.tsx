@@ -17,15 +17,25 @@ interface SurveyState {
 const QUESTIONS_PER_PAGE = 3;
 
 interface SurveyContentProps {
+  profession?: string;
+  storageName: string;
   questions: Question[];
   title: string;
   onBack: () => void;
   onSubmit: () => void;
 }
 
-export default function SurveyContent({ questions, title, onBack, onSubmit }: SurveyContentProps) {
+export default function SurveyContent({
+  profession = '',
+  storageName,
+  questions,
+  title,
+  onBack,
+  onSubmit,
+}: SurveyContentProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [answers, setAnswers] = useState<SurveyState>({});
+  const [savedProfession, setSavedProfession] = useState<string>(profession);
 
   const totalQuestions = questions.length;
   const totalPages = Math.ceil(totalQuestions / QUESTIONS_PER_PAGE);
@@ -34,16 +44,19 @@ export default function SurveyContent({ questions, title, onBack, onSubmit }: Su
 
   // Load saved progress from localStorage
   useEffect(() => {
-    const savedAnswers = localStorage.getItem('surveyAnswers');
-    if (savedAnswers) {
-      setAnswers(JSON.parse(savedAnswers));
+    const savedData = localStorage.getItem(storageName);
+    if (savedData) {
+      const parsedData = JSON.parse(savedData);
+      if (parsedData.profession) setSavedProfession(parsedData.profession);
+      if (parsedData.results) setAnswers(parsedData.results);
     }
   }, []);
 
   // Save progress to localStorage
   useEffect(() => {
-    localStorage.setItem('surveyAnswers', JSON.stringify(answers));
-  }, [answers]);
+    const dataToSave = { profession: savedProfession, results: answers };
+    localStorage.setItem(storageName, JSON.stringify(dataToSave));
+  }, [answers, savedProfession]);
 
   const handleValueChange = (questionIndex: number, value: number) => {
     setAnswers((prev) => ({
