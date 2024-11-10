@@ -54,7 +54,12 @@ const iconMap: { [key: string]: React.ReactNode } = {
   network: <Activity className="w-5 h-5 text-primary mt-1" />,
   corporate: <Building2 className="w-5 h-5 text-primary mt-1" />,
   family: <Users className="w-5 h-5 text-primary mt-1" />,
-  // Add more mappings as needed
+  health: <Heart className="w-5 h-5 text-primary mt-1" />,
+  tech: <Monitor className="w-5 h-5 text-primary mt-1" />,
+  science: <Brain className="w-5 h-5 text-primary mt-1" />,
+  finance: <PiggyBank className="w-5 h-5 text-primary mt-1" />,
+  arts: <Flower2 className="w-5 h-5 text-primary mt-1" />,
+  data: <Database className="w-5 h-5 text-primary mt-1" />,
 };
 
 const ProfilePage = () => {
