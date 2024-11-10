@@ -6,7 +6,7 @@ import { onboardingRedirects, OnboardingTypeKey } from './app/onboarding/types';
 const protectedPaths: Record<string, OnboardingTypeKey[]> = {
   '/company': ['COMPANY'],
   '/jobseeker': ['JOBSEEKER'],
-  '/employee': ['EMPLOYEE'],
+  '/email': ['EMPLOYEE'],
 };
 
 // Add paths that should be accessible without a role
@@ -20,6 +20,7 @@ const publicPaths = [
   '/swiper',
   '/swiper/results',
   '/applicant',
+  '/email',
 ];
 
 export function middleware(request: NextRequest) {
