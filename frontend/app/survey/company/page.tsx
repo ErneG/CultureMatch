@@ -106,7 +106,7 @@ export default function SetupCompanyPage() {
 
   const onSubmit = (data: CompanyFormValues) => {
     localStorage.setItem('companyData', JSON.stringify(data));
-    router.push('/enterprise/profile'); // Redirect to the profile page after saving
+    router.push('/enterprise/metrics'); // Redirect to the profile page after saving
   };
 
   return (

@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { MenuIcon } from 'lucide-react';
 
 const links = [
-  { href: '/enterprise/metrics', label: 'Summary' },
+  { href: '/enterprise/metrics', label: 'Metrics' },
   { href: '/enterprise/positions', label: 'Positions' },
   { href: '/enterprise/profile', label: 'Profile' },
 ];
