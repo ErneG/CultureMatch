@@ -6,17 +6,17 @@ import { ChartConfig } from '@/components/ui/chart';
 import { SmileIcon, TargetIcon, StressIcon, ThumbsUpIcon } from '@/components/icons/TraitIcon';
 
 const chartData = {
-  lastSurveyResponseCount: 41,
+  lastSurveyResponseCount: 50,
   lastSurveyResponsePercentage: 99,
   matchesMade: 41,
   matchesMadePercentage: 65,
-  matchesOutperforming: 41,
+  matchesOutperforming: 30,
   matchesOutperformingPercentage: 27,
   traitScores: {
-    happiness: 80,
-    purpose: 91,
-    satisfaction: 73,
-    stressFree: 28,
+    happiness: 72,
+    purpose: 70,
+    satisfaction: 50,
+    stressFree: 70,
   },
 };
 
