@@ -1,5 +1,7 @@
 import sys
 import os
+import random
+from typing import List
 
 from .models import EntityTrait, SurveyResponseItemReport, db
 from decimal import Decimal, InvalidOperation
@@ -273,3 +275,33 @@ class SurveyAnalysisService:
                 indicator=i,
                 normalized_avg=normalized_avg_keyword,
             )
+
+    def get_jobseeker_weighted_category_score(
+        self,
+        ratings: List[int],
+        comments: List[str],
+    ) -> List[float]:
+        ratings_res = []
+
+        for rating, comment in zip(ratings, comments):
+            # Step 1: Normalize the rating (0 to 1)
+            normalized_score = rating / 6
+
+            # Step 2: Generate a random percentage between 5% and 10%
+            random_percentage = random.uniform(
+                0.05, 0.10
+            )  # Generates a random float between 0.05 and 0.10
+
+            # Step 3: Randomly decide whether to add or subtract the percentage
+            adjustment = random_percentage * normalized_score
+            if random.choice([True, False]):  # Randomly decide to add or subtract
+                normalized_score += adjustment
+            else:
+                normalized_score -= adjustment
+
+            # Ensure the score stays within the 0 to 1 range
+            normalized_score = max(0, min(1, normalized_score))
+
+            ratings_res.append(normalized_score)
+
+        return ratings_res
