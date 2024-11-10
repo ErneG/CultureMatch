@@ -1,16 +1,20 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useSprings, animated, to as interpolate } from '@react-spring/web';
+import { useSprings } from '@react-spring/web';
 import { useDrag } from '@use-gesture/react';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Building2, MapPin, DollarSign, Briefcase, X, Check } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import Confetti from 'react-confetti';
+import { useRouter } from 'next/navigation'; // For navigation
+
+import { X, Check } from 'lucide-react';
+import { SwipeCard } from './_components/SwipeCard';
+import { Job } from '@/types/job';
+import { EndCard } from './_components/EndCard';
+import { SwipeWayIndicator } from './_components/SwipeWayIndecator';
+import { useAcceptedJobs } from '@/components/providers/AcceptedJobsContext';
 
 // Mock data for job listings
-const jobs = [
+const jobs: Job[] = [
   {
     id: 1,
     company: 'TechCorp',
@@ -51,24 +55,40 @@ const to = (i: number) => ({
   delay: i * 100,
 });
 
-const Swiper = () => {
-  const [gone] = useState(() => new Set());
+const Swiper: React.FC = () => {
+  const [gone] = useState(() => new Set<number>());
   const [cardPages, setCardPages] = useState<Record<number, number>>({});
   const [swipeDir, setSwipeDir] = useState<Record<number, number>>({});
-  const [props, api] = useSprings(jobs.length, (i) => ({ ...to(i), from: to(i) }));
+  const [springs, api] = useSprings(jobs.length, (i) => ({ ...to(i), from: to(i) }));
   const [isDragging, setIsDragging] = useState(false);
   const [windowWidth, setWindowWidth] = useState(0);
 
+  // New state variables for end card and confetti fade-out
+  const [showEndCard, setShowEndCard] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [isFadingOut, setIsFadingOut] = useState(false); // for fade-out effect
+  const { addAcceptedJob, clearAcceptedJobs } = useAcceptedJobs();
+  const router = useRouter(); // For navigation
+
   // Handle window resize and initial size
+
+  useEffect(() => {
+    clearAcceptedJobs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     const updateWidth = () => setWindowWidth(window.innerWidth);
-    updateWidth(); // Set initial width
+    updateWidth();
     window.addEventListener('resize', updateWidth);
     return () => window.removeEventListener('resize', updateWidth);
   }, []);
 
   const onSwipeRight = (jobId: number) => {
-    console.log('Swiped right on job:', jobId);
+    const acceptedJob = jobs.find((job) => job.id === jobId);
+    if (acceptedJob) {
+      addAcceptedJob(acceptedJob);
+    }
   };
 
   const onSwipeLeft = (jobId: number) => {
@@ -85,16 +105,17 @@ const Swiper = () => {
     }));
   };
 
+  const VELOCITY_THRESHOLD = 0.2;
+  const DISTANCE_THRESHOLD = 0.25;
+
   // Handle swipe for accept/decline
   const bind = useDrag(
     ({ args: [index], active, movement: [mx], velocity: [vx], distance }) => {
-      setIsDragging(distance[0] > 5);
+      const distanceMagnitude = distance;
+      setIsDragging(distanceMagnitude[0] > 5);
 
-      const dir = mx > 0 ? 1 : mx < 0 ? -1 : 0;
+      const dir = mx > 0 ? 1 : -1;
       setSwipeDir((prev) => ({ ...prev, [index]: active ? dir : 0 }));
-
-      const VELOCITY_THRESHOLD = 0.4;
-      const DISTANCE_THRESHOLD = 1;
 
       const isSwipedFastEnough = Math.abs(vx) > VELOCITY_THRESHOLD;
       const isSwipedFarEnough = Math.abs(mx) > windowWidth * DISTANCE_THRESHOLD;
@@ -106,18 +127,18 @@ const Swiper = () => {
         if (shouldDismissCard) {
           gone.add(index);
 
-          if (mx > 0) {
+          if (dir > 0) {
             onSwipeRight(jobs[index].id);
           } else {
             onSwipeLeft(jobs[index].id);
           }
 
           const THROW_DISTANCE = windowWidth + 200;
-          const THROW_MULTIPLIER = 10;
+          const THROW_MULTIPLIER = 20;
 
           return {
-            x: THROW_DISTANCE * (mx > 0 ? 1 : -1),
-            rot: mx / 100 + (mx > 0 ? 1 : -1) * THROW_MULTIPLIER * vx,
+            x: THROW_DISTANCE * dir,
+            rot: mx / 100 + dir * THROW_MULTIPLIER * vx,
             scale: 0.5,
             config: { friction: 50, tension: 200 },
           };
@@ -127,19 +148,27 @@ const Swiper = () => {
           x: active ? mx : 0,
           rot: active ? mx / 100 : 0,
           scale: 1,
-          config: {
-            friction: 50,
-            tension: active ? 800 : 500,
-          },
+          config: { friction: 50, tension: active ? 800 : 500 },
         };
       });
 
       if (!active && gone.size === jobs.length) {
+        setShowConfetti(true); // Show confetti
         setTimeout(() => {
-          gone.clear();
-          setSwipeDir({});
-          api.start((i) => to(i));
-        }, 600);
+          setShowEndCard(true);
+        }, 300); // Show end card after 500ms
+        setSwipeDir({});
+
+        // Start fade-out after 5 seconds
+        setTimeout(() => {
+          setIsFadingOut(true); // Trigger fade-out effect
+        }, 5000);
+
+        // Hide confetti completely after fade-out transition
+        setTimeout(() => {
+          setShowConfetti(false);
+          setIsFadingOut(false);
+        }, 5500); // 500ms for the fade-out duration
       }
     },
     {
@@ -149,185 +178,74 @@ const Swiper = () => {
     },
   );
 
+  // Handler to restart the swiper
+  const handleRestart = () => {
+    gone.clear();
+    setShowEndCard(false);
+    setShowConfetti(false);
+    setIsFadingOut(false);
+    setSwipeDir({});
+    setCardPages({});
+    clearAcceptedJobs();
+    api.start((i) => to(i));
+  };
+
+  // Handler to proceed to the next page
+  const handleNextPage = () => {
+    router.push('/swiper/results');
+  };
+
   // Don't render until we have window width
   if (!windowWidth) return null;
 
   return (
-    <div>
-      <div className="flex items-center justify-center w-screen h-screen bg-[#f5f5f5] overflow-hidden">
-        <div className="relative w-full h-full max-w-[100vw] max-h-[100vh] px-8 py-12">
+    <div className="flex items-start justify-center w-screen h-[100vh] bg-[#f5f5f5] overflow-hidden gap-4">
+      {/* Confetti Effect */}
+      {showConfetti && (
+        <Confetti
+          width={windowWidth}
+          height={window.innerHeight}
+          opacity={isFadingOut ? 0 : 1} // Use `opacity` to control fade-out
+          className="transition-opacity duration-500" // CSS transition for fade-out
+        />
+      )}
+
+      <div className="relative w-full h-[calc(100%-3rem)] max-h-[1200px] max-w-xl  md:px-4 py-6">
+        <div className="relative w-full h-[calc(100%-3rem)]   px-4 py-6">
           <div className="relative w-full h-full">
-            {props.map(({ x, rot }, i) => (
-              <animated.div
-                className="absolute inset-0 will-change-transform origin-bottom"
-                key={i}
-                style={{
-                  x,
-                  transform: interpolate([rot], (r) => `rotate(${r}deg)`),
-                  zIndex: jobs.length - i,
-                }}>
-                <div
-                  {...bind(i)}
-                  onClick={() => handleCardClick(i)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      handleCardClick(i);
-                    }
-                  }}
-                  className="absolute inset-0 cursor-pointer">
-                  {/* Swipe Indicators */}
-                  <div className="absolute inset-0 flex justify-between items-center px-8 pointer-events-none">
-                    <animated.div
-                      style={{
-                        opacity: interpolate([x], (x) => Math.min(1, Math.max(0, -x / 100))),
-                      }}>
-                      <div className="bg-red-500/80 text-white px-6 py-2 rounded-full backdrop-blur-sm">
-                        Decline
-                      </div>
-                    </animated.div>
-                    <animated.div
-                      style={{
-                        opacity: interpolate([x], (x) => Math.min(1, Math.max(0, x / 100))),
-                      }}>
-                      <div className="bg-green-500/80 text-white px-6 py-2 rounded-full backdrop-blur-sm">
-                        Accept
-                      </div>
-                    </animated.div>
-                  </div>
-                  {/* Card Content - Front */}
-                  <animated.div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      opacity: cardPages[i] === 1 ? 0 : 1,
-                      pointerEvents: cardPages[i] === 1 ? 'none' : 'auto',
-                      transition: 'opacity 0.3s ease-in-out',
-                    }}>
-                    <Card
-                      className={cn(
-                        'w-full h-full p-8 flex flex-col transition-colors',
-                        swipeDir[i] > 0 && 'border-green-500/50',
-                        swipeDir[i] < 0 && 'border-red-500/50',
-                      )}>
-                      <div className="flex items-start justify-between mb-6">
-                        <div>
-                          <h2 className="text-3xl font-bold tracking-tight mb-2">
-                            {jobs[i].company}
-                          </h2>
-                          <h3 className="text-xl text-muted-foreground">{jobs[i].position}</h3>
-                        </div>
-                        <Building2 className="h-8 w-8 text-muted-foreground" />
-                      </div>
-                      <Separator className="my-6" />
-                      <div className="flex flex-wrap gap-2 mb-6">
-                        <Badge variant="secondary" className="flex gap-1 items-center">
-                          <MapPin className="h-3 w-3" /> {jobs[i].location}
-                        </Badge>
-                        <Badge variant="secondary" className="flex gap-1 items-center">
-                          <DollarSign className="h-3 w-3" /> {jobs[i].salary}
-                        </Badge>
-                      </div>
-                      <div className="space-y-6 flex-grow">
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm text-muted-foreground">Work-Life Balance</span>
-                            <span className="font-medium">{jobs[i].culture.workLifeBalance}/5</span>
-                          </div>
-                          <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-primary rounded-full transition-all"
-                              style={{ width: `${(jobs[i].culture.workLifeBalance / 5) * 100}%` }}
-                            />
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm text-muted-foreground">Career Growth</span>
-                            <span className="font-medium">{jobs[i].culture.careerGrowth}/5</span>
-                          </div>
-                          <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-primary rounded-full transition-all"
-                              style={{ width: `${(jobs[i].culture.careerGrowth / 5) * 100}%` }}
-                            />
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm text-muted-foreground">Innovation</span>
-                            <span className="font-medium">{jobs[i].culture.innovation}/5</span>
-                          </div>
-                          <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-primary rounded-full transition-all"
-                              style={{ width: `${(jobs[i].culture.innovation / 5) * 100}%` }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <p className="text-sm text-muted-foreground text-center mt-6">
-                        Tap to see more details
-                      </p>
-                    </Card>
-                  </animated.div>
-                  {/* Card Content - Back */}
-                  <animated.div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      opacity: cardPages[i] === 1 ? 1 : 0,
-                      pointerEvents: cardPages[i] === 1 ? 'auto' : 'none',
-                      transition: 'opacity 0.3s ease-in-out',
-                    }}>
-                    <Card
-                      className={cn(
-                        'w-full h-full p-8 flex flex-col transition-colors',
-                        swipeDir[i] > 0 && 'border-green-500/50',
-                        swipeDir[i] < 0 && 'border-red-500/50',
-                      )}>
-                      <div className="flex items-start justify-between mb-6">
-                        <div>
-                          <h2 className="text-3xl font-bold tracking-tight mb-2">
-                            {jobs[i].company}
-                          </h2>
-                          <h3 className="text-xl text-muted-foreground">{jobs[i].position}</h3>
-                        </div>
-                        <Briefcase className="h-8 w-8 text-muted-foreground" />
-                      </div>
-                      <Separator className="my-6" />
-                      <p className="text-lg flex-grow leading-relaxed">{jobs[i].details}</p>
-                      <div className="space-y-4 mt-6">
-                        <div className="flex items-center gap-2">
-                          <MapPin className="h-5 w-5 text-muted-foreground" />
-                          <span className="font-medium">{jobs[i].location}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <DollarSign className="h-5 w-5 text-muted-foreground" />
-                          <span className="font-medium">{jobs[i].salary}</span>
-                        </div>
-                      </div>
-                      <p className="text-sm text-muted-foreground text-center mt-6">
-                        Tap to return
-                      </p>
-                    </Card>
-                  </animated.div>
-                </div>
-              </animated.div>
-            ))}
+            {showEndCard ? (
+              <EndCard onRestart={handleRestart} onNextPage={handleNextPage} />
+            ) : (
+              springs.map((style, i) => (
+                <React.Fragment key={i}>
+                  <SwipeCard
+                    job={jobs[i]}
+                    index={i}
+                    style={style}
+                    bind={bind}
+                    handleCardClick={handleCardClick}
+                    isFlipped={cardPages[i] === 1}
+                    swipeDir={swipeDir[i] || 0}
+                  />
+                  {i === jobs.length - 1 && <SwipeWayIndicator swipeDir={swipeDir[i] || 0} />}
+                </React.Fragment>
+              ))
+            )}
           </div>
         </div>
-        <div className="absolute bottom-8 left-0 right-0 text-center">
-          <div className="bg-background/80 backdrop-blur-sm mx-auto px-6 py-3 rounded-full inline-flex gap-6">
-            <p className="text-muted-foreground flex items-center gap-2">
-              <X className="h-4 w-4" /> Swipe left to decline
-            </p>
-            <p className="text-muted-foreground flex items-center gap-2">
-              <Check className="h-4 w-4" /> Swipe right to accept
-            </p>
+        {/* Conditionally render bottom indicator */}
+        {!showEndCard && (
+          <div className="absolute bottom-3 left-0 right-0 text-center">
+            <div className="bg-background/80 backdrop-blur-sm mx-auto px-6 py-3 rounded-full inline-flex gap-6">
+              <p className="text-muted-foreground flex items-center gap-2">
+                <X className="h-4 w-4" /> Swipe left to decline
+              </p>
+              <p className="text-muted-foreground flex items-center gap-2">
+                <Check className="h-4 w-4" /> Swipe right to accept
+              </p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

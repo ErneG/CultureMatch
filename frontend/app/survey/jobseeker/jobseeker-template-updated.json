@@ -1,0 +1,104 @@
+{
+  "jobseeker_questionnaire": [
+    {
+      "question": "I enjoy working in a collaborative, shared workspace over a quieter, private setting.",
+      "description": "Tell us about your preferred work environment and why you find it conducive to your work style. How do you see a collaborative workspace benefiting you?",
+      "attribute": "happiness"
+    },
+    {
+      "question": "Having a close-knit team culture is important to me.",
+      "description": "What does a close-knit team culture mean to you? Describe what aspects of team culture are most important to you and why.",
+      "attribute": "belonging"
+    },
+    {
+      "question": "It is important to me that my company is committed to sustainability and social responsibility.",
+      "description": "Describe what sustainability and social responsibility mean to you in a company context. Share any examples of initiatives that resonate with you.",
+      "attribute": "purpose"
+    },
+    {
+      "question": "I appreciate companies that encourage community involvement and volunteer opportunities.",
+      "description": "How important is community involvement to you? What kind of community engagement would you be interested in participating in through a company?",
+      "attribute": "purpose"
+    },
+    {
+      "question": "I want to work for a company with clear policies around diversity, equity, and inclusion.",
+      "description": "What does a diverse, equitable, and inclusive workplace look like to you? Why are these policies important to you in a company?",
+      "attribute": "inclusion"
+    },
+    {
+      "question": "I value a company culture that prioritizes learning and development opportunities.",
+      "description": "What kind of learning and development opportunities are you most interested in? How do you envision these opportunities contributing to your career growth?",
+      "attribute": "learning"
+    },
+    {
+      "question": "Having mentorship and guidance from managers is important to me.",
+      "description": "Describe the ideal mentorship and guidance you would seek from a manager. How does mentorship contribute to your success?",
+      "attribute": "support"
+    },
+    {
+      "question": "I seek a role that includes regular opportunities for skills development and training.",
+      "description": "What specific skills are you looking to develop or enhance? What type of training programs would be most beneficial to you?",
+      "attribute": "learning"
+    },
+    {
+      "question": "Flexibility in work hours or the ability to work remotely is important to me.",
+      "description": "Describe your ideal work schedule or arrangement. How important is flexibility to you, and how would it enhance your work-life balance?",
+      "attribute": "flexibility"
+    },
+    {
+      "question": "Maintaining a strong work-life balance, even if it means working within set hours, is important to me.",
+      "description": "How do you define work-life balance? What strategies do you use to maintain a healthy balance between your work and personal life?",
+      "attribute": "satisfaction"
+    },
+    {
+      "question": "I want a role that aligns with a personal passion or purpose, beyond just the day-to-day tasks.",
+      "description": "What are your passions and how do you see them aligning with your career goals? Describe the kind of work that would give you a sense of purpose.",
+      "attribute": "purpose"
+    },
+    {
+      "question": "I thrive in a work environment that offers variety and new challenges, rather than a consistent, stable workload.",
+      "description": "Explain how you approach new challenges and how variety in your work contributes to your motivation and job satisfaction.",
+      "attribute": "achievement"
+    },
+    {
+      "question": "I value frequent feedback and recognition from my team and leaders.",
+      "description": "What kind of feedback and recognition do you find most motivating and helpful? How do you prefer to receive feedback?",
+      "attribute": "appreciation"
+    },
+    {
+      "question": "It is important to me to feel valued and acknowledged for my individual contributions.",
+      "description": "How do you like to be recognized for your contributions? What makes you feel valued in a workplace?",
+      "attribute": "appreciation"
+    },
+    {
+      "question": "I prefer structured communication channels with set check-ins over open, informal communication.",
+      "description": "Describe your preferred communication style and how it contributes to your effectiveness in a team setting.",
+      "attribute": "management"
+    },
+    {
+      "question": "Open and transparent communication from both my team and leaders is important to me.",
+      "description": "Why is open and transparent communication important to you? How does it impact your work experience and relationships with colleagues and leaders?",
+      "attribute": "pressure"
+    },
+    {
+      "question": "I thrive in an office environment that fosters creativity and innovation, with brainstorming spaces and group activities.",
+      "description": "Describe an ideal work environment that fosters creativity and innovation. How do these elements contribute to your best work?",
+      "attribute": "energy"
+    },
+    {
+      "question": "I prefer a casual dress code in the workplace over a formal one.",
+      "description": "What are your thoughts on dress codes in the workplace, and how does it impact your comfort and productivity?",
+      "attribute": "happiness"
+    },
+    {
+      "question": "Competitive compensation is a key factor in my job decisions.",
+      "description": "How do you prioritize salary and benefits in your job search? What compensation elements are most important to you?",
+      "attribute": "compensation"
+    },
+    {
+      "question": "I prioritize working in an environment with a strong ethical culture and professional boundaries.",
+      "description": "What does a trustworthy workplace mean to you? Consider aspects like professional conduct, ethical practices, and team dynamics in your ideal work environment.",
+      "attribute": "trust"
+    }
+  ]
+}

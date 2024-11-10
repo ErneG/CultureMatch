@@ -5,9 +5,9 @@ export const OnboardingType = {
 } as const;
 
 export const onboardingRedirects = {
-  COMPANY: '/company',
-  JOBSEEKER: '/jobseeker',
-  EMPLOYEE: '/employee',
+  COMPANY: '/survey/company',
+  JOBSEEKER: '/survey/jobseeker',
+  EMPLOYEE: '/email',
 } as const;
 
 export type OnboardingTypeKey = keyof typeof OnboardingType;

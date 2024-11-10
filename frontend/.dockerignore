@@ -1,0 +1,26 @@
+# General
+.git
+.gitignore
+.dockerignore
+README.md
+docker-compose.yml
+
+# Node.js
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Next.js
+.next
+out
+
+# Editors
+.vscode
+.idea
+
+# OS files
+.DS_Store
+
+#Sentry
+.sentryclirc
+.env
