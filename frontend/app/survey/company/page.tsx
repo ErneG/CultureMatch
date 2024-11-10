@@ -83,7 +83,7 @@ export default function SetupCompanyPage() {
       size: '',
       foundingDate: undefined,
       location: '',
-      industry: '',
+      industry: 'Medicine',
       specialties: [],
       logoUrl: '',
     },
@@ -391,7 +391,12 @@ export default function SetupCompanyPage() {
                   <FormItem>
                     <FormLabel>Industry</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter industry" {...field} value={field.value ?? ''} />
+                      <Input
+                        placeholder="Enter industry"
+                        {...field}
+                        value={field.value ?? ''}
+                        disabled
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -449,26 +454,6 @@ export default function SetupCompanyPage() {
                   Add Specialty
                 </Button>
               </div>
-
-              {/* Is Active */}
-              <FormField
-                control={form.control}
-                name="isActive"
-                render={({ field }) => (
-                  <FormItem className="flex items-center space-x-2">
-                    <FormLabel>Is Active</FormLabel>
-                    <FormControl>
-                      <input
-                        type="checkbox"
-                        checked={field.value}
-                        onChange={(e) => field.onChange(e.target.checked)}
-                        className="cursor-pointer"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
 
               <Button type="submit" className="w-full mt-4 bg-blue-500 hover:bg-blue-600">
                 Continue
