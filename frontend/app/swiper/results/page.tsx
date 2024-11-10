@@ -1,18 +1,33 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, CheckCircle, XCircle, Trash2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+  ArrowLeft,
+  Building2,
+  MapPin,
+  Banknote,
+  CheckCircle,
+  XCircle,
+  Trash2,
+  PartyPopper,
+  Loader,
+} from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Job } from '@/types/job';
 
 const AcceptedJobsPage: React.FC = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(true);
   const [acceptedJobs, setAcceptedJobs] = useState<Job[]>([]);
 
   useEffect(() => {
+    setLoading(true);
     const storedJobs = localStorage.getItem('acceptedJobs');
 
     if (storedJobs) {
@@ -25,6 +40,7 @@ const AcceptedJobsPage: React.FC = () => {
     } else {
       router.push('/swiper');
     }
+    setLoading(false);
   }, [router]);
 
   const jobsWithMatchStatus = useMemo(
@@ -43,54 +59,120 @@ const AcceptedJobsPage: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
       <Navbar />
-      <h1 className="text-3xl font-bold mb-6 text-center">Your Accepted Jobs</h1>
-      {jobsWithMatchStatus.length === 0 ? (
-        <p className="text-center text-muted-foreground">You have no accepted jobs yet.</p>
-      ) : (
-        <div className="space-y-4">
-          {jobsWithMatchStatus.map((job) => (
-            <Card key={job.id} className="p-6 flex items-center">
-              <div className="flex-grow">
-                <h2 className="text-xl font-semibold">{job.position}</h2>
-                <p className="text-muted-foreground mb-2">{job.company}</p>
-                <div className="flex flex-wrap gap-2 mb-2">
-                  <Badge variant="secondary">{job.location}</Badge>
-                  <Badge variant="secondary">{job.salary}</Badge>
-                </div>
-                <p className="text-sm text-muted-foreground">{job.details}</p>
-              </div>
-              <div className="ml-4 flex flex-col items-center">
-                {job.isMatch ? (
-                  <div className="flex flex-row gap-2 items-center justify-center">
-                    <p>It&apos;s a Match!</p>
-                    <CheckCircle className="h-8 w-8 text-green-500" />
-                  </div>
-                ) : (
-                  <XCircle className="h-8 w-8 text-red-500" />
-                )}
-                <button
-                  onClick={() => handleRemoveJob(String(job.id))}
-                  className="mt-2 text-red-500 hover:text-red-700">
-                  <Trash2 className="h-6 w-6" />
-                </button>
-              </div>
-            </Card>
-          ))}
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold">Application manager</h1>
+          <p className="text-muted-foreground mt-2">Track your job applications and matches here</p>
         </div>
-      )}
+
+        <ScrollArea className="h-[calc(100vh-250px)]">
+          {loading ? (
+            <div className="flex items-center justify-center h-full">
+              <Loader className="w-8 h-8 animate-spin" />
+            </div>
+          ) : jobsWithMatchStatus.length === 0 ? (
+            <EmptyState />
+          ) : (
+            <div className="space-y-4 pr-4">
+              {jobsWithMatchStatus.map((job) => (
+                <JobCard key={job.id} job={job} onRemove={() => handleRemoveJob(String(job.id))} />
+              ))}
+            </div>
+          )}
+        </ScrollArea>
+      </div>
     </div>
   );
 };
 
-export default AcceptedJobsPage;
+const JobCard = ({ job, onRemove }: { job: Job & { isMatch: boolean }; onRemove: () => void }) => (
+  <Card className={job.isMatch ? 'border-green-500/50' : ''}>
+    <CardHeader className="pb-4">
+      <div className="flex items-start justify-between">
+        <div>
+          <CardTitle className="text-xl">{job.position}</CardTitle>
+          <CardDescription className="flex items-center mt-1">
+            <Building2 className="h-4 w-4 mr-1" />
+            {job.company}
+          </CardDescription>
+        </div>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-muted-foreground hover:text-destructive"
+          onClick={onRemove}>
+          <Trash2 className="h-5 w-5" />
+        </Button>
+      </div>
+    </CardHeader>
+    <CardContent className="space-y-4">
+      <div className="flex flex-wrap gap-2">
+        <Badge variant="secondary" className="flex items-center">
+          <MapPin className="h-3 w-3 mr-1" />
+          {job.location}
+        </Badge>
+        <Badge variant="secondary" className="flex items-center">
+          <Banknote className="h-3 w-3 mr-1" />
+          {job.salary}
+        </Badge>
+      </div>
 
-const Navbar: React.FC = () => (
-  <nav className="mb-4">
-    <ArrowLeft className="h-6 w-6 inline-block -mt-1 mr-2" />
-    <Link href="/swiper" className="hover:underline">
-      Back to Swiper
-    </Link>
+      <p className="text-sm text-muted-foreground">{job.details}</p>
+
+      <Separator />
+
+      <div className="flex items-center justify-between pt-2">
+        <div className="flex items-center gap-2">
+          {job.isMatch ? (
+            <>
+              <Badge variant="default" className="bg-green-500">
+                <PartyPopper className="h-3 w-3 mr-1" />
+                It&apos;s a Match!
+              </Badge>
+              <p className="text-sm text-muted-foreground">
+                The company is interested in your profile
+              </p>
+            </>
+          ) : (
+            <Badge variant="secondary">Pending Response</Badge>
+          )}
+        </div>
+        {job.isMatch ? (
+          <CheckCircle className="h-6 w-6 text-green-500" />
+        ) : (
+          <XCircle className="h-6 w-6 text-muted-foreground" />
+        )}
+      </div>
+    </CardContent>
+  </Card>
+);
+
+const EmptyState = () => (
+  <Card className="border-dashed">
+    <CardContent className="flex flex-col items-center justify-center py-8 text-center">
+      <XCircle className="h-12 w-12 text-muted-foreground mb-4" />
+      <h3 className="font-semibold text-lg">No Accepted Jobs</h3>
+      <p className="text-muted-foreground mt-2">
+        Start swiping to find and save jobs that interest you
+      </p>
+      <Button asChild className="mt-4">
+        <Link href="/swiper">Start Swiping</Link>
+      </Button>
+    </CardContent>
+  </Card>
+);
+
+const Navbar = () => (
+  <nav className="mb-8">
+    <Button variant="ghost" asChild className="gap-2">
+      <Link href="/swiper">
+        <ArrowLeft className="h-4 w-4" />
+        Back to Swiper
+      </Link>
+    </Button>
   </nav>
 );
+
+export default AcceptedJobsPage;

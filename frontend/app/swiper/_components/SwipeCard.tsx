@@ -47,7 +47,7 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
           }
         }}
         className="absolute inset-0 cursor-pointer">
-        {/* Card Content */}
+        {/* Card Content */}{' '}
         {!isFlipped ? (
           <CardFront job={job} swipeDir={swipeDir} />
         ) : (
