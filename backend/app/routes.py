@@ -2,7 +2,14 @@ from flask import Blueprint, jsonify, request
 
 from .service import SurveyAnalysisService
 
-from .helpers import SurveyResponseItemsFilter, get_survey_response_items
+from .helpers import (
+    EntityFilter,
+    JobListingFilter,
+    SurveyResponseItemsFilter,
+    get_company,
+    get_job_listings,
+    get_survey_response_items,
+)
 from . import models
 
 bp = Blueprint("main", __name__)
@@ -130,7 +137,22 @@ def get_jobseeker_recommended_jobs():
     )
 
     # Retrieve most similar jobs (with their respective companies)
-    # TODO
+    job_filter = JobListingFilter(title=profession)
+    # job_suggestions = get_job_listings(filter=job_filter)
+    job_suggestions = get_job_listings(limit=5)
+
+    results = []
+    for job_suggestion in job_suggestions:
+        company_filter = EntityFilter(entityId=job_suggestion["entityId"])
+        company_info = get_company(filter=company_filter)[0]
+
+        # Format the output job listing object
+        result = {
+            "job": job_suggestion,
+            "company": company_info,
+        }
+        results.append(result)
 
     # Return the lists for confirmation (or you could store them as needed)
-    return jsonify({"scores": scores})
+    # return jsonify({"scores": scores})
+    return jsonify(results)
