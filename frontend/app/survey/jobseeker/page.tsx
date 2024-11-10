@@ -83,16 +83,6 @@ export default function JobseekerSurvey() {
               </Button>
               <div className="flex items-center gap-2">
                 <Button
-                  variant="outline"
-                  disabled={!canProceedToQuestions}
-                  onClick={() => {
-                    router.push('/swiper?type=skip');
-                  }}
-                  className="flex items-center gap-2">
-                  DEMO: Skip form
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-                <Button
                   onClick={() => setCurrentStep('questions')}
                   disabled={!canProceedToQuestions}
                   className="flex items-center gap-2">
@@ -100,6 +90,16 @@ export default function JobseekerSurvey() {
                 </Button>
               </div>
             </div>
+            <Button
+              variant="outline"
+              disabled={!canProceedToQuestions}
+              onClick={() => {
+                router.push('/swiper?type=skip');
+              }}
+              className="flex items-center gap-2">
+              DEMO: Skip form
+              <ArrowRight className="w-4 h-4" />
+            </Button>
           </div>
         );
 

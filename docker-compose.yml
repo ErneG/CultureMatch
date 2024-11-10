@@ -13,7 +13,7 @@ services:
       - nginxproxymanager_nginx-proxy-manager-nw
 networks:
   nginxproxymanager_nginx-proxy-manager-nw: 
-    # external: true
+    external: true
 
     # Uncomment the following lines to enable Traefik
     # container_name: frontend-b8koc4oc4ggc400skgg4o44s-201843285515
