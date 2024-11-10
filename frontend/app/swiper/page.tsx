@@ -210,42 +210,43 @@ const Swiper: React.FC = () => {
         />
       )}
 
-      <div className="relative w-full h-[calc(100%-3rem)] max-w-md max-h-screen px-4 py-6">
-        <div className="relative w-full h-full">
-          {showEndCard ? (
-            <EndCard onRestart={handleRestart} onNextPage={handleNextPage} />
-          ) : (
-            springs.map((style, i) => (
-              <React.Fragment key={i}>
-                <SwipeCard
-                  job={jobs[i]}
-                  index={i}
-                  style={style}
-                  bind={bind}
-                  handleCardClick={handleCardClick}
-                  isFlipped={cardPages[i] === 1}
-                  swipeDir={swipeDir[i] || 0}
-                />
-                {i === jobs.length - 1 && <SwipeWayIndicator swipeDir={swipeDir[i] || 0} />}
-              </React.Fragment>
-            ))
-          )}
-        </div>
-      </div>
-
-      {/* Conditionally render bottom indicator */}
-      {!showEndCard && (
-        <div className="absolute bottom-3 left-0 right-0 text-center">
-          <div className="bg-background/80 backdrop-blur-sm mx-auto px-6 py-3 rounded-full inline-flex gap-6">
-            <p className="text-muted-foreground flex items-center gap-2">
-              <X className="h-4 w-4" /> Swipe left to decline
-            </p>
-            <p className="text-muted-foreground flex items-center gap-2">
-              <Check className="h-4 w-4" /> Swipe right to accept
-            </p>
+      <div className="relative w-full h-[calc(100%-3rem)] max-h-[1200px] max-w-xl  md:px-4 py-6">
+        <div className="relative w-full h-[calc(100%-3rem)]   px-4 py-6">
+          <div className="relative w-full h-full">
+            {showEndCard ? (
+              <EndCard onRestart={handleRestart} onNextPage={handleNextPage} />
+            ) : (
+              springs.map((style, i) => (
+                <React.Fragment key={i}>
+                  <SwipeCard
+                    job={jobs[i]}
+                    index={i}
+                    style={style}
+                    bind={bind}
+                    handleCardClick={handleCardClick}
+                    isFlipped={cardPages[i] === 1}
+                    swipeDir={swipeDir[i] || 0}
+                  />
+                  {i === jobs.length - 1 && <SwipeWayIndicator swipeDir={swipeDir[i] || 0} />}
+                </React.Fragment>
+              ))
+            )}
           </div>
         </div>
-      )}
+        {/* Conditionally render bottom indicator */}
+        {!showEndCard && (
+          <div className="absolute bottom-3 left-0 right-0 text-center">
+            <div className="bg-background/80 backdrop-blur-sm mx-auto px-6 py-3 rounded-full inline-flex gap-6">
+              <p className="text-muted-foreground flex items-center gap-2">
+                <X className="h-4 w-4" /> Swipe left to decline
+              </p>
+              <p className="text-muted-foreground flex items-center gap-2">
+                <Check className="h-4 w-4" /> Swipe right to accept
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
