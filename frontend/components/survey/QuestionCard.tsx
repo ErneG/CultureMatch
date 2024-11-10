@@ -22,7 +22,7 @@ export function QuestionCard({
   onValueChange,
   onElaborationChange,
 }: QuestionCardProps) {
-  const ratingOptions = [1, 2, 3, 4, 5];
+  const ratingOptions = [1, 2, 3, 4, 5, 6];
   const isElaborationEmpty = elaboration.length === 0;
 
   return (
