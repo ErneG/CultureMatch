@@ -105,6 +105,7 @@ class WeightedScorer:
     def calculate_weighted_single_text(
         self,
         input_text: str,
+        input_keyword: str,
         alpha=0.05,
         beta=0.35,
         gamma=0.3,
@@ -122,6 +123,7 @@ class WeightedScorer:
 
         score = self.calculate_weighted_batch(
             input_texts=[input_text],
+            input_keywords=[input_keyword],
             alpha=alpha,
             beta=beta,
             gamma=gamma,
@@ -132,6 +134,7 @@ class WeightedScorer:
     def calculate_weighted_batch(
         self,
         input_texts: List[str],
+        input_keywords: List[str],
         alpha=0.05,
         beta=0.35,
         gamma=0.3,
@@ -159,7 +162,7 @@ class WeightedScorer:
             self.category_scorer.calculate_category_correspondance_scores_batch(
                 total_categories=candidate_labels,
                 input_texts=input_texts,
-                input_categories=input_labels,
+                input_categories=input_keywords,
             )
         )
 
@@ -190,22 +193,20 @@ class WeightedScorer:
 
             # Normalize the final score to ensure it stays between 0 and 1
             final_score = max(0, min(1, final_score))
-            print(f"Processing: {input_texts}, score = {final_score}")
-
             combined_scores.append(final_score)
 
-        for i, score in enumerate(combined_scores):
-            print(f"Feedback {i+1}: {input_texts[i]}")
-            print(
-                f"Sensitivity Score (normalized) = {sentiment_scores[i][0]}: {sentiment_scores[i][1]:.4f}"
-            )
-            print(f"Conductivity Score (normalized) = {conductivity_scores[i]:.2f}")
-            print(f"Complexity Score (normalized) = {complexity_scores[i]:.2f}")
-            print(
-                f"Category Score (normalized) = {input_labels[i]}: {category_scores[i]:.2f}"
-            )
-            print(f"-----------------= RESULT =-----------------")
-            print(f"Weighted Score (normalized) = {score:.2f}\n")
+        # for i, score in enumerate(combined_scores):
+        #     print(f"Feedback {i+1}: {input_texts[i]}")
+        #     print(
+        #         f"Sensitivity Score (normalized) = {sentiment_scores[i][0]}: {sentiment_scores[i][1]:.4f}"
+        #     )
+        #     print(f"Conductivity Score (normalized) = {conductivity_scores[i]:.2f}")
+        #     print(f"Complexity Score (normalized) = {complexity_scores[i]:.2f}")
+        #     print(
+        #         f"Category Score (normalized) = {input_labels[i]}: {category_scores[i]:.2f}"
+        #     )
+        #     print(f"-----------------= RESULT =-----------------")
+        #     print(f"Weighted Score (normalized) = {score:.2f}\n")
 
         return combined_scores
 
@@ -215,6 +216,7 @@ class WeightedScorer:
 # weighted = WeightedScorer()
 # scores = weighted.calculate_weighted_batch(
 #     input_texts,
+#     input_labels,
 #     alpha=0.05,
 #     beta=0.45,
 #     gamma=0.3,

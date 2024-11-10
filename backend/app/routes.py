@@ -70,6 +70,7 @@ def get_survey_response_items_route():
     return jsonify({"survey_response_items": survey_response_items})
 
 
+# AI specific backend DB
 survey_analysis = SurveyAnalysisService()
 
 
@@ -92,9 +93,6 @@ def get_category_surveys():
     )
 
 
-# AI specific backend DB
-
-
 @bp.route("/analysed_survey_responses", methods=["GET"])
 def get_analysed_survey_responses():
     survey_responses = models.SurveyResponseItemReport.query.all()
@@ -113,3 +111,9 @@ def get_analysed_entity_trait():
     return jsonify(
         {"analysed_entity": [entity_trait.to_dict() for entity_trait in entity_traits]}
     )
+
+
+@bp.route("/init_analysis", methods=["POST"])
+def post_init_analysis():
+    survey_analysis.analyse_survey_question_feedback()
+    return jsonify({"result": "analysis OK"})
