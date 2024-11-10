@@ -90,3 +90,26 @@ def get_category_surveys():
             ]
         }
     )
+
+
+# AI specific backend DB
+
+
+@bp.route("/analysed_survey_responses", methods=["GET"])
+def get_analysed_survey_responses():
+    survey_responses = models.SurveyResponseItemReport.query.all()
+    return jsonify(
+        {
+            "analysed_survey_responses": [
+                survey_response.to_dict() for survey_response in survey_responses
+            ]
+        }
+    )
+
+
+@bp.route("/analysed_entity", methods=["GET"])
+def get_analysed_entity_trait():
+    entity_traits = models.EntityTrait.query.all()
+    return jsonify(
+        {"analysed_entity": [entity_trait.to_dict() for entity_trait in entity_traits]}
+    )

@@ -51,6 +51,7 @@ class User(db.Model):
 
 
 class EntityTrait(db.Model):
+    __bind_key__ = "secondary_db"
     __tablename__ = "EntityTrait"
     id = db.Column(db.Integer, primary_key=True)
     entityId = db.Column(db.Integer, nullable=False)
@@ -241,6 +242,7 @@ class SurveyResponseItem(db.Model):
 
 
 class SurveyResponseItemReport(db.Model):
+    __bind_key__ = "secondary_db"
     __tablename__ = "SurveyResponseItemReport"
     id = db.Column(db.Integer, primary_key=True)
     responseItemId = db.Column(db.Integer, nullable=False)
