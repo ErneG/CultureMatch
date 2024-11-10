@@ -14,7 +14,7 @@ from app import db
 
 
 class Entity(db.Model):
-    _tablename_ = "Entity"
+    __tablename__ = "Entity"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     type = db.Column(db.Integer, nullable=False)
@@ -42,7 +42,7 @@ class Entity(db.Model):
 
 
 class User(db.Model):
-    _tablename_ = "User"
+    __tablename__ = "User"
     id = db.Column(db.Integer, primary_key=True)
     otherFields = db.Column(db.String(255), nullable=True)
 
@@ -51,7 +51,8 @@ class User(db.Model):
 
 
 class EntityTrait(db.Model):
-    _tablename_ = "EntityTrait"
+    __bind_key__ = "secondary_db"
+    __tablename__ = "EntityTrait"
     id = db.Column(db.Integer, primary_key=True)
     entityId = db.Column(db.Integer, nullable=False)
     indicator = db.Column(db.Integer, nullable=False)
@@ -71,7 +72,7 @@ class EntityTrait(db.Model):
 
 
 class EntityProfile(db.Model):
-    _tablename_ = "EntityProfile"
+    __tablename__ = "EntityProfile"
     entityId = db.Column(db.Integer, primary_key=True)
     tagline = db.Column(db.String(255), nullable=True)
     description = db.Column(db.Text, nullable=True)
@@ -105,7 +106,7 @@ class EntityProfile(db.Model):
 
 
 class JobListing(db.Model):
-    _tablename_ = "JobListing"
+    __tablename__ = "JobListing"
     id = db.Column(db.Integer, primary_key=True)
     entityId = db.Column(db.Integer, nullable=False)
     title = db.Column(db.String(255), nullable=False)
@@ -149,7 +150,7 @@ class JobListing(db.Model):
 
 
 class Survey(db.Model):
-    _tablename_ = "Survey"
+    __tablename__ = "Survey"
     id = db.Column(db.Integer, primary_key=True)
     entityId = db.Column(db.Integer, nullable=True)
     title = db.Column(db.String(255), nullable=False)
@@ -175,7 +176,7 @@ class Survey(db.Model):
 
 
 class SurveyQuestion(db.Model):
-    _tablename_ = "SurveyQuestion"
+    __tablename__ = "SurveyQuestion"
     id = db.Column(db.Integer, primary_key=True)
     surveyId = db.Column(db.Integer, nullable=False)
     title = db.Column(db.String(255), nullable=True)
@@ -203,7 +204,7 @@ class SurveyQuestion(db.Model):
 
 
 class SurveyResponse(db.Model):
-    _tablename_ = "SurveyResponse"
+    __tablename__ = "SurveyResponse"
     id = db.Column(db.Integer, primary_key=True)
     surveyId = db.Column(db.Integer, nullable=False)
     respondentId = db.Column(db.String(36), nullable=False)
@@ -221,7 +222,7 @@ class SurveyResponse(db.Model):
 
 
 class SurveyResponseItem(db.Model):
-    _tablename_ = "SurveyResponseItem"
+    __tablename__ = "SurveyResponseItem"
     id = db.Column(db.Integer, primary_key=True)
     surveyResponseId = db.Column(db.Integer, nullable=False)
     surveyQuestionId = db.Column(db.Integer, nullable=False)
@@ -241,7 +242,8 @@ class SurveyResponseItem(db.Model):
 
 
 class SurveyResponseItemReport(db.Model):
-    _tablename_ = "SurveyResponseItemReport"
+    __bind_key__ = "secondary_db"
+    __tablename__ = "SurveyResponseItemReport"
     id = db.Column(db.Integer, primary_key=True)
     responseItemId = db.Column(db.Integer, nullable=False)
     weight = db.Column(db.Numeric(5, 2), nullable=True)
