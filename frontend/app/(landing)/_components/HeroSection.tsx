@@ -14,7 +14,8 @@ const HeroSection = () => {
       </div>
       <div className="flex justify-center items-center relative mt-[-10px] md:lg:mt-[-20px] lg:mt-[-30px] xl:mt-[-40px]">
         <Image
-          src={'/ImageGoesHere.png'}
+          priority
+          src={'/DashboardImage.webp'}
           alt="banner image"
           height={1200}
           width={1200}

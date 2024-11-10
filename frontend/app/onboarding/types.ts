@@ -5,7 +5,7 @@ export const OnboardingType = {
 } as const;
 
 export const onboardingRedirects = {
-  COMPANY: '/survey/company',
+  COMPANY: '/survey/metrics',
   JOBSEEKER: '/survey/jobseeker',
   EMPLOYEE: '/email',
 } as const;
