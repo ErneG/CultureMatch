@@ -9,6 +9,11 @@ services:
         - NEXT_PUBLIC_POSTHOG_HOST=${NEXT_PUBLIC_POSTHOG_HOST}
     ports:
       - "60001:3000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     # networks:
     #   - nginxproxymanager_nginx-proxy-manager-nw
 # networks:
